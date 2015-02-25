@@ -41,10 +41,10 @@ function sumar() {
         total = 0;
 
 
-    //document.formulario_receta.piezas_sol.value = Math.ceil(total);
-    //document.formulario_receta.can_sol.value = Math.ceil(cajas);
-    document.formulario_receta.piezas_sol.value = Math.ceil(unidades);
-    document.formulario_receta.can_sol.value = Math.ceil(unidades);
+    document.formulario_receta.piezas_sol.value = Math.ceil(total);
+    document.formulario_receta.can_sol.value = Math.ceil(cajas);
+    //document.formulario_receta.piezas_sol.value = Math.ceil(unidades);
+    //document.formulario_receta.can_sol.value = Math.ceil(unidades);
 }
 
 
