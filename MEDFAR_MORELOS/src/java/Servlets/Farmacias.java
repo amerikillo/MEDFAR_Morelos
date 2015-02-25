@@ -73,13 +73,13 @@ public class Farmacias extends HttpServlet {
                             } else {
                                 con.insertar("update receta set transito = '0',baja='2' where id_rec = '" + request.getParameter("id_rec") + "'  ");
                             }
-                            out.println("<script>alert('Se surtió la receta con folio: " + request.getParameter("fol_rec") + " correctamente.')</script>");
                             ResultSet rset = con.consulta("SELECT id_tip FROM receta WHERE fol_rec='" + request.getParameter("fol_rec") + "' GROUP BY id_tip");
                             if (rset.next()) {
                                 idtip = rset.getString("id_tip");
                             }
                         }
                     }
+                    out.println("<script>alert('Se surtió la receta con folio: " + request.getParameter("fol_rec") + " correctamente.')</script>");
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                     out.println("<script>alert('Error al surtir la receta')</script>");
@@ -151,11 +151,11 @@ public class Farmacias extends HttpServlet {
                                                 exist = exist - sur21;
 
                                                 con.insertar("update receta set baja = '0' where id_rec = '" + request.getParameter("id_rec") + "'");
-                                                con.insertar("update detreceta set cant_sur = '" + sol2 + "' , det_pro = '"+det_pro+"' where id_rec = '" + request.getParameter("id_rec") + "' and fol_det='" + folio + "'");
+                                                con.insertar("update detreceta set cant_sur = '" + sol2 + "' , det_pro = '" + det_pro + "' where id_rec = '" + request.getParameter("id_rec") + "' and fol_det='" + folio + "'");
                                                 con.insertar("UPDATE inventario SET cant='" + exist + "' WHERE det_pro='" + det_pro + "'");
                                             } else {
                                                 total2 = exist + sur12;
-                                                con.insertar("update detreceta set cant_sur = '" + total2 + "' , det_pro = '"+det_pro+"' where id_rec = '" + request.getParameter("id_rec") + "' and fol_det='" + folio + "'  ");
+                                                con.insertar("update detreceta set cant_sur = '" + total2 + "' , det_pro = '" + det_pro + "' where id_rec = '" + request.getParameter("id_rec") + "' and fol_det='" + folio + "'  ");
                                                 con.insertar("UPDATE inventario SET cant='0' WHERE det_pro='" + det_pro + "'");
                                                 sur21 = sur21 - exist;
                                             }
@@ -165,12 +165,12 @@ public class Farmacias extends HttpServlet {
                                             if (exist >= sur) {
                                                 exist = exist - sur;
                                                 System.out.println("detalle mayor--" + det_pro + "-exis-" + exist);
-                                                con.insertar("update detreceta set cant_sur = '" + total + "' , det_pro = '"+det_pro+"' where id_rec = '" + request.getParameter("id_rec") + "' and fol_det='" + folio + "' ");
+                                                con.insertar("update detreceta set cant_sur = '" + total + "' , det_pro = '" + det_pro + "' where id_rec = '" + request.getParameter("id_rec") + "' and fol_det='" + folio + "' ");
                                                 con.insertar("UPDATE inventario SET cant='" + exist + "' WHERE det_pro='" + det_pro + "'");
                                             } else {
                                                 total2 = exist + sur12;
                                                 System.out.println("detalle menor--" + det_pro + "-exis-" + exist);
-                                                con.insertar("update detreceta set cant_sur = '" + total2 + "' , det_pro = '"+det_pro+"' where id_rec = '" + request.getParameter("id_rec") + "' and fol_det='" + folio + "' ");
+                                                con.insertar("update detreceta set cant_sur = '" + total2 + "' , det_pro = '" + det_pro + "' where id_rec = '" + request.getParameter("id_rec") + "' and fol_det='" + folio + "' ");
                                                 con.insertar("UPDATE inventario SET cant='0' WHERE det_pro='" + det_pro + "'");
                                             }
                                             cont = 0;
@@ -245,13 +245,13 @@ public class Farmacias extends HttpServlet {
                                 }
                             }
 
-                            out.println("<script>alert('Se surtió la receta con folio: " + request.getParameter("fol_rec") + " correctamente.')</script>");
                             rset = con.consulta("SELECT id_tip FROM receta WHERE fol_rec='" + request.getParameter("fol_rec") + "' GROUP BY id_tip");
                             if (rset.next()) {
                                 idtip = rset.getString("id_tip");
                             }
                         }
                     }
+                    out.println("<script>alert('Se surtió la receta con folio: " + request.getParameter("fol_rec") + " correctamente.')</script>");
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                     out.println("<script>alert('Error al surtir la receta Pendiente')</script>");
