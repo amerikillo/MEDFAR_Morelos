@@ -42,6 +42,17 @@
     } catch (Exception ex) {
 
     }
+
+    String cla_uni = "";
+    try {
+        con.conectar();
+        ResultSet rsetUni = con.consulta("select cla_uni from usuarios where id_usu = '" + sesion.getAttribute("id_usu") + "' ");
+        while (rsetUni.next()) {
+            cla_uni = rsetUni.getString("cla_uni");
+        }
+        con.cierraConexion();
+    } catch (Exception e) {
+    }
 %>
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); %>
 <%java.text.DateFormat df1 = new java.text.SimpleDateFormat("HH:mm:ss"); %>
@@ -91,7 +102,7 @@
                                 <%
                                     try {
                                         con.conectar();
-                                        ResultSet rset = con.consulta("SELECT DISTINCT(fol_rec), nom_com, fecha_hora, id_rec from recetas where fol_rec like '%" + fol_rec + "%' and nom_com like '%" + nom_pac + "%' and transito!=0 and baja=0 and id_tip='1' order by id_rec asc ;");
+                                        ResultSet rset = con.consulta("SELECT DISTINCT(fol_rec), nom_com, fecha_hora, id_rec from recetas where fol_rec like '%" + fol_rec + "%' and nom_com like '%" + nom_pac + "%' and transito!=0 and baja=0 and id_tip='1' and cla_uni = '" + cla_uni + "' order by id_rec asc ;");
                                         while (rset.next()) {
                                 %>
                                 <form action="../Farmacias" name="form_<%=rset.getString(4)%>">
@@ -172,71 +183,71 @@
 
                                         </div>
                                     </div>
-                            </form>
-                            <%
+                                </form>
+                                <%
+                                        }
+                                        con.cierraConexion();
+                                    } catch (Exception e) {
                                     }
-                                    con.cierraConexion();
-                                } catch (Exception e) {
-                                }
-                            %>
+                                %>
+                            </div>
                         </div>
                     </div>
                 </div>
+
             </div>
 
         </div>
 
-    </div>
-
-</body>
-<!-- 
-================================================== -->
-<!-- Se coloca al final del documento para que cargue mas rapido -->
-<!-- Se debe de seguir ese orden al momento de llamar los JS -->
-<script src="../js/jquery-1.9.1.js"></script>
-<script src="../js/bootstrap.js"></script>
-<script src="../js/jquery-ui.js"></script>
-<script type="text/javascript">
-                                                    $(document).ready(function() {
-                                                        $("#nom_pac").keyup(function() {
-                                                            var nombre2 = $("#nom_pac").val();
-                                                            $("#nom_pac").autocomplete({
-                                                                source: "../AutoPacientes?nombre=" + nombre2,
-                                                                minLength: 2,
-                                                                select: function(event, ui) {
-                                                                    $("#nom_pac").val(ui.item.nom_com);
-                                                                    return false;
-                                                                }
-                                                            }).data("ui-autocomplete")._renderItem = function(ul, item) {
-                                                                return $("<li>")
-                                                                        .data("ui-autocomplete-item", item)
-                                                                        .append("<a>" + item.nom_com + "</a>")
-                                                                        .appendTo(ul);
-                                                            };
+        <!-- 
+        ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <script src="../js/jquery-1.9.1.js"></script>
+        <script src="../js/bootstrap.js"></script>
+        <script src="../js/jquery-ui.js"></script>
+        <script type="text/javascript">
+                                                        $(document).ready(function() {
+                                                            $("#nom_pac").keyup(function() {
+                                                                var nombre2 = $("#nom_pac").val();
+                                                                $("#nom_pac").autocomplete({
+                                                                    source: "../AutoPacientes?nombre=" + nombre2,
+                                                                    minLength: 2,
+                                                                    select: function(event, ui) {
+                                                                        $("#nom_pac").val(ui.item.nom_com);
+                                                                        return false;
+                                                                    }
+                                                                }).data("ui-autocomplete")._renderItem = function(ul, item) {
+                                                                    return $("<li>")
+                                                                            .data("ui-autocomplete-item", item)
+                                                                            .append("<a>" + item.nom_com + "</a>")
+                                                                            .appendTo(ul);
+                                                                };
+                                                            });
                                                         });
-                                                    });
 
-                                                    function tabular(e, obj) {
-                                                        tecla = (document.all) ? e.keyCode : e.which;
-                                                        if (tecla !== 13)
-                                                            return;
-                                                        frm = obj.form;
-                                                        for (i = 0; i < frm.elements.length; i++)
-                                                            if (frm.elements[i] === obj)
-                                                            {
-                                                                if (i === frm.elements.length - 1)
-                                                                    i = -1;
-                                                                break
-                                                            }
-                                                        /*ACA ESTA EL CAMBIO*/
-                                                        if (frm.elements[i + 1].disabled === true)
-                                                            tabular(e, frm.elements[i + 1]);
-                                                        else
-                                                            frm.elements[i + 1].focus();
-                                                        return false;
-                                                    }
-</script>
+                                                        function tabular(e, obj) {
+                                                            tecla = (document.all) ? e.keyCode : e.which;
+                                                            if (tecla !== 13)
+                                                                return;
+                                                            frm = obj.form;
+                                                            for (i = 0; i < frm.elements.length; i++)
+                                                                if (frm.elements[i] === obj)
+                                                                {
+                                                                    if (i === frm.elements.length - 1)
+                                                                        i = -1;
+                                                                    break
+                                                                }
+                                                            /*ACA ESTA EL CAMBIO*/
+                                                            if (frm.elements[i + 1].disabled === true)
+                                                                tabular(e, frm.elements[i + 1]);
+                                                            else
+                                                                frm.elements[i + 1].focus();
+                                                            return false;
+                                                        }
+        </script>
 
+    </body>
 
 </html>
 
