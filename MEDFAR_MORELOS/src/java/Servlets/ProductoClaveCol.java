@@ -55,6 +55,14 @@ public class ProductoClaveCol extends HttpServlet {
                 /*
                  *Seccion para insertar a la tabla Receta
                  */
+                String cla_uni = "";
+                try {
+                    ResultSet rsetUni = con.consulta("select cla_uni from usuarios where id_usu = '" + sesion.getAttribute("id_usu") + "' ");
+                    while (rsetUni.next()) {
+                        cla_uni = rsetUni.getString("cla_uni");
+                    }
+                } catch (Exception e) {
+                }
                 try {
                     con.conectar();
                     try {
@@ -128,7 +136,7 @@ public class ProductoClaveCol extends HttpServlet {
                         + "p.cla_pro = dp.cla_pro\n"
                         + "and dp.det_pro = i.det_pro\n"
                         + "and p.cla_pro='" + request.getParameter("cla_pro") + "'\n"
-                        + "and dp.cad_pro between '"+fecha1+"' and '"+fecha2+"' and p.f_status='A' \n"
+                        + "and dp.cad_pro between '"+fecha1+"' and '"+fecha2+"' and p.f_status='A' and i.cla_uni='" + cla_uni + "' \n"
                         + ";");
                 while (rset.next()) {
                     json.put("total", rset.getString(1));
@@ -141,7 +149,7 @@ public class ProductoClaveCol extends HttpServlet {
                         + "and dp.det_pro = i.det_pro\n"
                         + "and dp.id_ori = '0'\n"
                         + "and p.cla_pro='" + request.getParameter("cla_pro") + "'\n"
-                        + "and dp.cad_pro between '"+fecha1+"' and '"+fecha2+"' and p.f_status='A' \n"
+                        + "and dp.cad_pro between '"+fecha1+"' and '"+fecha2+"' and p.f_status='A' and i.cla_uni='" + cla_uni + "' \n"
                         + ";");
                 while (rset.next()) {
                     json.put("origen0", rset.getString(1));
@@ -154,7 +162,7 @@ public class ProductoClaveCol extends HttpServlet {
                         + "and dp.det_pro = i.det_pro\n"
                         + "and dp.id_ori = '1'\n"
                         + "and p.cla_pro='" + request.getParameter("cla_pro") + "'\n"
-                        + "and dp.cad_pro between '"+fecha1+"' and '"+fecha2+"' and p.f_status='A' \n"
+                        + "and dp.cad_pro between '"+fecha1+"' and '"+fecha2+"' and p.f_status='A' and i.cla_uni='" + cla_uni + "' \n"
                         + ";");
                 while (rset.next()) {
                     json.put("origen1", rset.getString(1));
@@ -167,7 +175,7 @@ public class ProductoClaveCol extends HttpServlet {
                         + "and dp.det_pro = i.det_pro\n"
                         + "and dp.id_ori = '2'\n"
                         + "and p.cla_pro='" + request.getParameter("cla_pro") + "'\n"
-                        + "and dp.cad_pro between '"+fecha1+"' and '"+fecha2+"' and p.f_status='A' \n"
+                        + "and dp.cad_pro between '"+fecha1+"' and '"+fecha2+"' and p.f_status='A' and i.cla_uni='" + cla_uni + "' \n"
                         + ";");
                 while (rset.next()) {
                     json.put("origen2", rset.getString(1));
