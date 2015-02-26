@@ -156,6 +156,10 @@
         <servlet-name>AutoProductos</servlet-name>
         <servlet-class>Autocomplete.AutoProductos</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AutoUnidades</servlet-name>
+        <servlet-class>Autocomplete.AutoUnidades</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Receta</servlet-name>
         <url-pattern>/Receta</url-pattern>
@@ -311,6 +315,10 @@
     <servlet-mapping>
         <servlet-name>AutoProductos</servlet-name>
         <url-pattern>/AutoProductos</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AutoUnidades</servlet-name>
+        <url-pattern>/AutoUnidades</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

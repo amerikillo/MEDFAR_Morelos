@@ -162,7 +162,7 @@
                 </div>
             </div><!--/.nav-collapse -->
         </div>
-<br/>
+        <br/>
         <div class="container-fluid">
             <div class="container">
 
@@ -371,40 +371,46 @@
                     </div> 
                 </form>
 
-                <div class="panel panel-default">
-                    <form class="form-horizontal" name="form" id="form" method="get" action="../RecetaNueva2">            
-                        <!--form method="post"-->
-                        <div class="panel-footer">
-                            <div class="row" id="tablaBotones">
-                                <div class="col-lg-6"></div>
-                                <div class="col-lg-3">
-                                    <!--button class="btn btn-warning btn-block" name="accion" value="nueva2" type="submit">Nueva Receta</button-->
+                <div class="panel panel-default">    
+                    <!--form method="post"-->
+                    <div class="panel-footer">
+                        <div class="row" id="tablaBotones">
+                            <%
+                                int ban_imp = 0;
+                                try {
+                                    con.conectar();
+                                    //ResultSet rset = con.consulta("select fol_det from recetas where fol_rec = '" + folio_rec + "' and cant_sur!=0 ");
+                                    ResultSet rset = con.consulta("select fol_det from recetas where fol_rec = '" + folio_rec + "' ");
+                                    while (rset.next()) {
+                                        ban_imp = 1;
+                                    }
+                                    con.cierraConexion();
+                                } catch (Exception e) {
+                                    System.out.println(e.getMessage());
+                                }
+                                if (ban_imp == 1) {
+                            %>
+
+                            <div class="col-lg-3 col-sm-offset-6">
+                                <form method="post" target="_blank" action="../farmacia/modVigilancia.jsp">
+                                    <input class="hidden" name="fol_rec" value="<%=folio_rec%>" />
+                                    <button class="btn btn-block btn-success" >Referenciar Receta</button>
+                                </form>
+                            </div>
+                            <div class="col-lg-3">
+                                <!--button class="btn btn-warning btn-block" name="accion" value="nueva2" type="submit">Nueva Receta</button-->
+                                <form class="form-horizontal" name="form" id="form" method="get" action="../RecetaNueva2">        
                                     <button class="btn btn-block btn-primary" name="btn_nueva" value="1" id="btn_clave">Guardar Receta</button>
-                                </div>
-                                <%
-                                    /*  int ban_imp = 0;
-                                     try {
-                                     con.conectar();
-                                     //ResultSet rset = con.consulta("select fol_det from recetas where fol_rec = '" + folio_rec + "' and cant_sur!=0 ");
-                                     ResultSet rset = con.consulta("select fol_det from recetas where fol_rec = '" + folio_rec + "' ");
-                                     while (rset.next()) {
-                                     ban_imp = 1;
-                                     }
-                                     con.cierraConexion();
-                                     } catch (Exception e) {
-                                     System.out.println(e.getMessage());
-                                     }
-                                     if (ban_imp == 1) {*/
-                                %>
-                                <!--div class="col-lg-3">
-                                    <a class="btn btn-success btn-block" href="../reportes/TicketFolio.jsp?fol_rec=<%=folio_rec%>">Imprimir Comprobante</a>
-                                </div-->
-                                <%
-                                    //}
-                                %>
-                            </div>  
-                        </div>
-                    </form>
+                                </form>
+                            </div>
+                            <!--div class="col-lg-3">
+                                <a class="btn btn-success btn-block" href="../reportes/TicketFolio.jsp?fol_rec=<%=folio_rec%>">Imprimir Comprobante</a>
+                            </div-->
+                            <%
+                                }
+                            %>
+                        </div>  
+                    </div>
                 </div>
             </div>
         </div>
@@ -419,7 +425,7 @@
                 ResultSet rset = con.consulta("select dr.fol_det, dr.can_sol, dr.cant_sur, dp.cla_pro, p.des_pro from detreceta dr, detalle_productos dp, productos p where dr.det_pro = dp.det_pro and dp.cla_pro = p.cla_pro and id_rec = '" + id_rec + "' ");
                 while (rset.next()) {
                     //System.out.println(rset.getString("fol_det"));
-%>
+        %>
         <div class="modal fade" id="edita_clave_<%=rset.getString("fol_det")%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -492,7 +498,7 @@
                                              * 
                                              * @returns {undefined}
                                              */
-                                            $(function() {
+                                            $(function () {
                                                 var availableTags = [
             <%
                 try {
@@ -515,7 +521,7 @@
                                                     source: availableTags
                                                 });
                                             });
-                                            $(function() {
+                                            $(function () {
                                                 var availableTags = [
             <%
                 try {
@@ -541,15 +547,15 @@
 
 
 
-                                            $(document).ready(function() {
+                                            $(document).ready(function () {
             <%
                 try {
                     con.conectar();
                     ResultSet rset = con.consulta("select fol_det from detreceta where id_rec = '" + id_rec + "' ");
                     while (rset.next()) {
-                    //System.out.println(rset.getString("fol_    det"));
-    %>
-                                                $('#btn_modificar_<%=rset.getString("fol_det")%>').click(function() {
+                        //System.out.println(rset.getString("fol_    det"));
+%>
+                                                $('#btn_modificar_<%=rset.getString("fol_det")%>').click(function () {
                                                     var dir = '../EditaMedicamento';
                                                     var form = $('#form_editaInsumo_<%=rset.getString("fol_det")%>');
                                                     var cant_sol = $('#cant_sol_<%=rset.getString("fol_det")%>');
@@ -562,9 +568,9 @@
                                                             type: form.attr('method'),
                                                             url: dir,
                                                             data: form.serialize(),
-                                                            success: function(data) {
+                                                            success: function (data) {
                                                             },
-                                                            error: function() {
+                                                            error: function () {
                                                                 //alert("Ha ocurrido un error");
                                                             }
                                                         });
@@ -574,16 +580,16 @@
                                                 });
 
 
-                                                $('#btn_eliminar_<%=rset.getString("fol_det")%>').click(function() {
+                                                $('#btn_eliminar_<%=rset.getString("fol_det")%>').click(function () {
                                                     var dir = '../EliminaClave';
                                                     var form = $('#form_eliminaInsumo_<%=rset.getString("fol_det")%>');
                                                     $.ajax({
                                                         type: form.attr('method'),
                                                         url: dir,
                                                         data: form.serialize(),
-                                                        success: function(data) {
+                                                        success: function (data) {
                                                         },
-                                                        error: function() {
+                                                        error: function () {
                                                             //alert("Ha ocurrido un error");
                                                         }
                                                     });
