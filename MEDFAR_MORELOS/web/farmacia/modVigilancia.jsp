@@ -66,7 +66,8 @@
             </form>
             <div class="row">
                 <div class="col-sm-12">
-                    <%                        try {
+                    <%                        
+    try {
                             String id_rec = "";
                             con.conectar();
                             ResultSet rset = con.consulta("select * from recetas where fol_rec = '" + request.getParameter("fol_rec") + "' and id_tip = '1' and cla_uni = '" + cla_uni + "' group by fol_rec");
@@ -202,7 +203,7 @@
                             <td><%=rset.getString("des_uni")%></td>
                             <td><%=rset.getString("paciente")%></td>
                             <td><%=rset.getString("medico")%></td>
-                            <td><%=rset.getString("fol_rec")%></td>
+                            <td><button class="btn btn-default" onclick="window.open('detRecetaVig.jsp?id_rec=<%=rset.getString("id_rec")%>', '', 'width=800,height=600,left=50,top=50,toolbar=no')"><%=rset.getString("fol_rec")%></button></td>
                             <td><textarea readonly="" class="form-control" rows="7"><%=rset.getString("justi")%></textarea></td>
                         </tr>
                         <%
