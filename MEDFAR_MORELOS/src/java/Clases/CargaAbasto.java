@@ -27,24 +27,25 @@ public class CargaAbasto {
                         String det_pro = comparaInsumo(rset.getString(1), rset.getString(2), rset.getString(3), rset.getString(5));
                         String id_inv = devuelveIndiceInventario(det_pro, cla_uni);
                         String CB = comparaCB(rset.getString(1), rset.getString(2), rset.getString(3), rset.getString(6));
+                        int cantAmp = devuelveAmpInsumo(rset.getString("clave"), rset.getInt(4));
                         if (CB.equals("0")) {
                             System.out.println("CB" + CB);
                             insertaInexistenteCB(rset.getString(6), rset.getString(1), rset.getString(2), rset.getString(3));
                         }
                         if (inventarioInicial(cla_uni)) {
-                            insertaInicialInexistente(det_pro, rset.getInt(4), cla_uni, fol_abasto, id_usu);
+                            insertaInicialInexistente(det_pro, cantAmp, cla_uni, fol_abasto, id_usu);
                         } else {
                             /*
                              * Para insumo nuevo
                              */
                             if (id_inv.equals("NA")) {
                                 //System.out.println("inexistente");
-                                insertaInexistente(det_pro, rset.getInt(4), cla_uni, fol_abasto, id_usu);
+                                insertaInexistente(det_pro, cantAmp, cla_uni, fol_abasto, id_usu);
                             } /*
                              * Para insumo existente
                              */ else {
                                 //System.out.println("existente");
-                                insertaExistente(det_pro, rset.getInt(4), cla_uni, fol_abasto, id_usu);
+                                insertaExistente(det_pro, cantAmp, cla_uni, fol_abasto, id_usu);
                             }
                         }
                     }
@@ -60,6 +61,22 @@ public class CargaAbasto {
             mensaje = "Abasto ya existente";
         }
         return mensaje;
+    }
+    
+    public int devuelveAmpInsumo(String cla_pro, int cant){
+        int cantTotal=cant;
+        int amp=1;
+        try {
+            con.conectar();
+            ResultSet rset = con.consulta("select amp_pro from productos where cla_pro = '"+cla_pro+"'");
+            while(rset.next()){
+                amp = rset.getInt("amp_pro");
+            }
+            con.cierraConexion();
+        } catch (Exception e) {
+        }
+        cantTotal = cantTotal*amp;
+        return cantTotal;
     }
 
     public String devuelveIndiceInventario(String det_pro, String cla_uni) {
