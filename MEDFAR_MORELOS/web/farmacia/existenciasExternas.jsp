@@ -4,6 +4,7 @@
     Author     : Americo
 --%>
 
+<%@page import="java.text.DecimalFormatSymbols"%>
 <%@page import="java.util.GregorianCalendar"%>
 <%@page import="java.util.Calendar"%>
 <%@page import="java.util.Date"%>
@@ -15,6 +16,13 @@
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+    DecimalFormat formatter = new DecimalFormat("#,###,###");
+    DecimalFormat formatterDecimal = new DecimalFormat("#,###,##0.00");
+    DecimalFormatSymbols custom = new DecimalFormatSymbols();
+    custom.setDecimalSeparator('.');
+    custom.setGroupingSeparator(',');
+    formatter.setDecimalFormatSymbols(custom);
+    formatterDecimal.setDecimalFormatSymbols(custom);
     DecimalFormat formatNumber = new DecimalFormat("#,###,###,###");
     ConectionDB con = new ConectionDB();
     HttpSession sesion = request.getSession();
@@ -70,59 +78,66 @@
                     if (request.getParameter("accion").equals("buscar")) {
             %>
             <table class="table table-condensed table-bordered table-striped" id="tablaExistencias">
-                <tr>
-                    <td>Unidad</td>
-                    <td>Clave</td>
-                    <td>Lote</td>
-                    <td>Caducidad</td>
-                    <td>Origen</td>
-                    <td>Cantidad</td>
-                </tr>
-                <%
-                    try {
-                        
-                        con.conectar();
-                        String cla_pro = "";
-                        cla_pro = request.getParameter("cla_pro");
+                <thead>
+                    <tr>
+                        <td>Unidad</td>
+                        <td>Clave</td>
+                        <td>Lote</td>
+                        <td>Caducidad</td>
+                        <td>Origen</td>
+                        <td>Cantidad</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%
+                        try {
 
-                        byte[] a = request.getParameter("des_pro").getBytes("ISO-8859-1");
-                        String des_pro = (new String(a, "UTF-8"));
-                        if (!request.getParameter("des_pro").equals("")) {
-                            ResultSet rset = con.consulta("select cla_pro from productos where des_pro = '" + des_pro + "'");
+                            con.conectar();
+                            String cla_pro = "";
+                            cla_pro = request.getParameter("cla_pro");
+
+                            byte[] a = request.getParameter("des_pro").getBytes("ISO-8859-1");
+                            String des_pro = (new String(a, "UTF-8"));
+                            if (!request.getParameter("des_pro").equals("")) {
+                                ResultSet rset = con.consulta("select cla_pro from productos where des_pro = '" + des_pro + "'");
+                                while (rset.next()) {
+                                    cla_pro = rset.getString("cla_pro");
+                                }
+                            }
+                            ResultSet rset = con.consulta("select *, DATE_FORMAT(cad_pro, '%d/%m/%Y') as caducidad from existencias where cla_pro = '" + cla_pro + "' and cant!=0");
                             while (rset.next()) {
-                                cla_pro = rset.getString("cla_pro");
+                                String des_uni = "";
+                                ResultSet rset2 = con.consulta("select des_uni from unidades where cla_uni = '" + rset.getString("cla_uni") + "'");
+                                while (rset2.next()) {
+                                    des_uni = rset2.getString("des_uni");
+                                }
+                    %>
+                    <tr>
+                        <td><%=rset.getString("cla_uni")%> - <%=des_uni%></td>
+                        <td title="<%=rset.getString("des_pro")%>"><%=rset.getString("cla_pro")%></td>
+                        <td><%=rset.getString("lot_pro")%></td>
+                        <td><%=rset.getString("caducidad")%></td>
+                        <td><%=rset.getString("id_ori")%></td>
+                        <td class="text-right"><%=formatter.format(rset.getInt("cant"))%></td>
+                    </tr>
+                    <%
                             }
+                            con.cierraConexion();
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
                         }
-                        ResultSet rset = con.consulta("select * from existencias where cla_pro = '" + cla_pro + "' and cant!=0");
-                        while (rset.next()) {
-                            String des_uni = "";
-                            ResultSet rset2 = con.consulta("select des_uni from unidades where cla_uni = '" + rset.getString("cla_uni") + "'");
-                            while (rset2.next()) {
-                                des_uni = rset2.getString("des_uni");
-                            }
-                %>
-                <tr>
-                    <td><%=rset.getString("cla_uni")%> - <%=des_uni%></td>
-                    <td title="<%=rset.getString("des_pro")%>"><%=rset.getString("cla_pro")%></td>
-                    <td><%=rset.getString("lot_pro")%></td>
-                    <td><%=rset.getString("cad_pro")%></td>
-                    <td><%=rset.getString("id_ori")%></td>
-                    <td><%=rset.getString("cant")%></td>
-                </tr>
-                <%
-                        }
-                        con.cierraConexion();
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                %>
+                    %>
+                </tbody>
             </table>
             <%
                     }
                 }
             %>
-        </div> <!-- 
-            ================================================== -->
+
+            <iframe src="https://www.google.com/maps/d/embed?mid=zpNBwpx3O2D0.kXGuHwczE2O4" width="100%" height="480"></iframe>
+        </div> 
+        <!-- 
+        ================================================== -->
         <!-- Se coloca al final del documento para que cargue mas rapido -->
         <!-- Se debe de seguir ese orden al momento de llamar los JS -->
         <script src="../js/jquery-1.9.1.js"></script>
