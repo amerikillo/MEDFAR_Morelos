@@ -7,10 +7,9 @@
 <%@page import="java.sql.ResultSet"%>
 <%@page import="Clases.ConectionDB"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-    ConectionDB con = new ConectionDB();
+<%    ConectionDB con = new ConectionDB();
     HttpSession sesion = request.getSession();
-    String id_usu = "";
+    String id_usu = "",NombreUsu="";
     try {
         id_usu = (String) session.getAttribute("id_usu");
     } catch (Exception e) {
@@ -27,6 +26,17 @@
     } catch (Exception e) {
 
     }
+    try {
+        con.conectar();
+        ResultSet RsetUsu = con.consulta("SELECT nombre FROM usuarios WHERE id_usu='" + id_usu + "'");
+        if (RsetUsu.next()) {
+            NombreUsu = RsetUsu.getString(1);
+        }
+        con.cierraConexion();
+    } catch (Exception ex) {
+
+    }
+
 
     if (fol_rec == null) {
         fol_rec = "";
@@ -104,9 +114,12 @@
 
                                                         }
                                                     %>
-
+                                                    
                                                     <input class="hidden" name="fol_det" value="<%=fol_det%>" />
                                                 </div>
+                                                <div class="col-sm-3">
+                                                        <button class="btn btn-block btn-info" type="button" name="imprimir" id="imprimir" value="imprimir" onclick="window.open('../reportes/RecetaFarm.jsp?fol_rec=<%=rset.getString(1)%>&tipo=1&re=si&usuario=<%=NombreUsu%>', '', 'width=1200,height=800,left=50,top=50,toolbar=no');">Imprimir Receta</button>                                                         
+                                                    </div>
                                                 <div class="col-sm-3">
                                                 </div>
                                                 <div class="col-sm-3">
@@ -173,44 +186,44 @@
     <script src="../js/bootstrap.js"></script>
     <script src="../js/jquery-ui.js"></script>
     <script type="text/javascript">
-$(document).ready(function(){
-    $("#nom_pac").keyup(function() {
-        var nombre2 = $("#nom_pac").val();
-        $("#nom_pac").autocomplete({
-        source: "../AutoPacientes?nombre=" + nombre2,
-        minLength: 2,
-        select: function(event, ui) {
-            $("#nom_pac").val(ui.item.nom_com);
-            return false;
-          }
-        }).data("ui-autocomplete")._renderItem = function(ul, item) {
-        return $("<li>")
-            .data("ui-autocomplete-item", item)
-            .append("<a>" + item.nom_com + "</a>")
-            .appendTo(ul);
-        };
-    });
-});
-  
-  function tabular(e, obj){
-    tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla !== 13)
-        return;
-    frm = obj.form;
-    for (i = 0; i < frm.elements.length; i++)
-        if (frm.elements[i] === obj)
-        {
-            if (i === frm.elements.length - 1)
-                i = -1;
-            break
-        }
-    /*ACA ESTA EL CAMBIO*/
-    if (frm.elements[i + 1].disabled === true)
-        tabular(e, frm.elements[i + 1]);
-    else
-        frm.elements[i + 1].focus();
-    return false;
-}
+                                                            $(document).ready(function() {
+                                                                $("#nom_pac").keyup(function() {
+                                                                    var nombre2 = $("#nom_pac").val();
+                                                                    $("#nom_pac").autocomplete({
+                                                                        source: "../AutoPacientes?nombre=" + nombre2,
+                                                                        minLength: 2,
+                                                                        select: function(event, ui) {
+                                                                            $("#nom_pac").val(ui.item.nom_com);
+                                                                            return false;
+                                                                        }
+                                                                    }).data("ui-autocomplete")._renderItem = function(ul, item) {
+                                                                        return $("<li>")
+                                                                                .data("ui-autocomplete-item", item)
+                                                                                .append("<a>" + item.nom_com + "</a>")
+                                                                                .appendTo(ul);
+                                                                    };
+                                                                });
+                                                            });
+
+                                                            function tabular(e, obj) {
+                                                                tecla = (document.all) ? e.keyCode : e.which;
+                                                                if (tecla !== 13)
+                                                                    return;
+                                                                frm = obj.form;
+                                                                for (i = 0; i < frm.elements.length; i++)
+                                                                    if (frm.elements[i] === obj)
+                                                                    {
+                                                                        if (i === frm.elements.length - 1)
+                                                                            i = -1;
+                                                                        break
+                                                                    }
+                                                                /*ACA ESTA EL CAMBIO*/
+                                                                if (frm.elements[i + 1].disabled === true)
+                                                                    tabular(e, frm.elements[i + 1]);
+                                                                else
+                                                                    frm.elements[i + 1].focus();
+                                                                return false;
+                                                            }
     </script>
 </html>
 

@@ -1,10 +1,12 @@
-<%@page import="java.text.DecimalFormatSymbols"%>
-<%@page import="java.text.DecimalFormat"%>
+
 <%@ page contentType="text/html; charset=iso-8859-1" language="java" import="java.sql.*" errorPage="" %>
+<%@page import="java.text.DecimalFormat"%>
+<%@page import="java.text.DecimalFormatSymbols"%>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss"); %>
 <%java.text.DateFormat df = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%
+
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormat formatterDecimal = new DecimalFormat("#,###,##0.00");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
@@ -12,14 +14,32 @@
     custom.setGroupingSeparator(',');
     formatter.setDecimalFormatSymbols(custom);
     formatterDecimal.setDecimalFormatSymbols(custom);
+    HttpSession sesion = request.getSession();
 //  Conexión a la BDD -------------------------------------------------------------
     Class.forName("org.gjt.mm.mysql.Driver");
-    Connection con = DriverManager.getConnection("jdbc:mysql://localhost/scr_morelos", "root", "eve9397");
+    Connection con = DriverManager.getConnection("jdbc:mysql://192.168.0.180/scr_morelos", "root", "eve9397");
     Statement stmt = con.createStatement();
     ResultSet rset = null;
     Statement stmt2 = con.createStatement();
     ResultSet rset2 = null;
 // fin objetos de conexión ------------------------------------------------------
+
+    String id_usu = "";
+    String cla_uni = "", des_uni = "";
+    try {
+        id_usu = (String) session.getAttribute("id_usu");
+    } catch (Exception e) {
+    }
+    try {
+        rset = stmt.executeQuery("select un.des_uni, us.cla_uni from usuarios us, unidades un where us.cla_uni = un.cla_uni and id_usu = '" + id_usu + "' ");
+        while (rset.next()) {
+            cla_uni = rset.getString("cla_uni");
+            des_uni = rset.getString("des_uni");
+
+        }
+    } catch (Exception e) {
+
+    }
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -117,13 +137,18 @@
                                         <span class="col-sm-2 h4">Unidad: </span>
                                         <div class="col-sm-5">
                                             <select name="cla_uni" class="form-control">
-
                                                 <%
                                                     try {
                                                         rset = stmt.executeQuery("select cla_uni, des_uni from unidades");
                                                         while (rset.next()) {
                                                 %>
-                                                <option value="<%=rset.getString("cla_uni")%>"><%=rset.getString("des_uni")%></option>
+                                                <option value="<%=rset.getString("cla_uni")%>"
+                                                        <%
+                                                            if (cla_uni.equals(rset.getString("cla_uni"))) {
+                                                                out.println("selected");
+                                                            }
+                                                        %>
+                                                        ><%=rset.getString("des_uni")%></option>
                                                 <%
                                                         }
                                                     } catch (Exception ex) {
@@ -174,7 +199,7 @@
             <tr>
                 <td width="102"></td>
                 <td height="63" colspan="2" align="center" valign="bottom" nowrap="nowrap" bgcolor="#FFFFFF" id="logo"><div align="center">
-                        <span class="style49"> GOBIERNO DEL ESTADO DE M&Eacute;XICO<br />
+                        <span class="style49"> GOBIERNO DEL ESTADO DE MORELOS<br />
                             SECRETARIA DE SALUD</br>
                             REPORTE DETALLADO DE CONSUMO POR RECETA <br />
 
@@ -218,7 +243,7 @@
                                 ori = "COMPRA CONSOLIDADA";
                             }
                             if ((request.getParameter("id_ori")).equals("2")) {
-                                ori = "MEDALFA";
+                                ori = "GNKL";
                             }
                         } catch (Exception e) {
                         }
@@ -371,7 +396,7 @@
                         $("#txtf_caduc").datepicker({minDate: 0});
                         $("#txtf_caduci").datepicker({minDate: 0});
 
-                        $(document).ready(function () {
+                        $(document).ready(function() {
                             //$('#tblRes').dataTable();
                         });
 

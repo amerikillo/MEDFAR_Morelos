@@ -77,7 +77,7 @@ public class RecetaPendi extends HttpServlet {
                 System.out.println("----------------****" + id_rec);
                 con.insertar("update receta set baja = '0', transito = '1'  where id_rec = "+id_rec+" ");
                
-                rset = con.consulta("SELECT i.id_inv, DP.det_pro, P.cla_pro, P.des_pro, DP.cad_pro, DP.lot_pro, I.cant, DP.cla_fin, DP.id_ori FROM detalle_productos DP, productos P, inventario I, unidades U, usuarios US WHERE DP.cla_pro = P.cla_pro AND DP.det_pro = I.det_pro AND I.cla_uni = U.cla_uni AND US.cla_uni = U.cla_uni AND P.cla_pro = '" + request.getParameter("cla_pro") + "' AND US.id_usu='" + sesion.getAttribute("id_usu") + "' and DP.cad_pro between '"+fecha1+"' and '"+fecha2+"' ORDER BY  DP.id_ori, DP.cad_pro, I.cant ASC ");
+                rset = con.consulta("SELECT I.id_inv, DP.det_pro, P.cla_pro, P.des_pro, DP.cad_pro, DP.lot_pro, I.cant, DP.cla_fin, DP.id_ori FROM detalle_productos DP, productos P, inventario I, unidades U, usuarios US WHERE DP.cla_pro = P.cla_pro AND DP.det_pro = I.det_pro AND I.cla_uni = U.cla_uni AND US.cla_uni = U.cla_uni AND P.cla_pro = '" + request.getParameter("cla_pro") + "' AND US.id_usu='" + sesion.getAttribute("id_usu") + "' and DP.cad_pro between '"+fecha1+"' and '"+fecha2+"' ORDER BY  DP.id_ori, DP.cad_pro, I.cant ASC ");
                     while (rset.next()) {
                         det_pro = rset.getString("det_pro");
                         if (Integer.parseInt(rset.getString("cant")) > 0) {

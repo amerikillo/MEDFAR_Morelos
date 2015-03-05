@@ -1,5 +1,4 @@
-<%@page contentType="text/html; charset=iso-8859-1" language="java" import="java.sql.*" import="java.text.*" import="java.lang.*" import="java.util.*" import= "javax.swing.*" import="java.io.*" import="java.text.DateFormat" 
-        import="java.text.ParseException" import="java.text.SimpleDateFormat" import="java.util.Calendar" import="java.util.Date"  import="java.text.NumberFormat" import="java.util.Locale" errorPage="" %>
+<%@page contentType="text/html; charset=iso-8859-1" language="java" import="java.sql.*" import="java.text.*" import="java.lang.*" import="java.util.*" import= "javax.swing.*" import="java.io.*" import="java.text.DateFormat" import="java.text.ParseException" import="java.text.SimpleDateFormat" import="java.util.Calendar" import="java.util.Date"  import="java.text.NumberFormat" import="java.util.Locale" errorPage="" %>
 
 <%java.text.DateFormat df = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
@@ -12,8 +11,9 @@
     formatter.setDecimalFormatSymbols(custom);
     formatterDecimal.setDecimalFormatSymbols(custom);
 // Conexion BDD via JDBC
+    HttpSession sesion = request.getSession();
     Class.forName("org.gjt.mm.mysql.Driver");
-    Connection con = DriverManager.getConnection("jdbc:mysql://localhost/scr_morelos", "root", "eve9397");
+    Connection con = DriverManager.getConnection("jdbc:mysql://192.168.0.180/scr_morelos", "root", "eve9397");
     Statement stmt = con.createStatement();
     ResultSet rset = null;
 // fin conexion --------
@@ -33,7 +33,24 @@
     } catch (Exception e) {
     }
     int total = 0;
-    int totalCajas=0;
+    int totalCajas = 0;
+
+    String id_usu = "";
+    String cla_uni = "", des_uni = "";
+    try {
+        id_usu = (String) session.getAttribute("id_usu");
+    } catch (Exception e) {
+    }
+    try {
+        rset = stmt.executeQuery("select un.des_uni, us.cla_uni from usuarios us, unidades un where us.cla_uni = un.cla_uni and id_usu = '" + id_usu + "' ");
+        while (rset.next()) {
+            cla_uni = rset.getString("cla_uni");
+            des_uni = rset.getString("des_uni");
+
+        }
+    } catch (Exception e) {
+
+    }
 %>
 
 
@@ -107,7 +124,7 @@
                     </td>
                     <td>
                         <div align="center">
-                            <a href="repor_dispensado.jsp?txtf_caduc=<%=f1%>&txtf_caduci=<%=f2%>&cla_uni=<%=request.getParameter("cla_uni")%>"><img src="../imagenes/exc.jpg" width="37" height="29" border="0" alt="Exportar a Excel" />
+                            <a href="repor_dispensado.jsp?txtf_caduc=<%=f1%>&txtf_caduci=<%=f2%>&cla_uni=<%=cla_uni%>"><img src="../imagenes/exc.jpg" width="37" height="29" border="0" alt="Exportar a Excel" />
                             </a></div>
                     </td>
                 </tr>
@@ -126,14 +143,15 @@
                     </td>
                 </tr>
                 <tr>
-                    <td height="20"><div align="center">CLAVE</div></td>
+                    <td height="20"><div align="center">CLAVE*</div></td>
                     <td class="bodyText"><div align="center">DESCRIPCI&Oacute;N</div></td>
                     <td><div align="center">Tab/Amp</div></td>
                     <td><div align="center">Cajas</div></td>
                 </tr>
                 <%
-                    rset = stmt.executeQuery("SELECT p.cla_pro, p.des_pro, sum(dr.cant_sur) as cant,(sum(dr.cant_sur))/p.amp_pro as cajas FROM productos p, detalle_productos dp, detreceta dr, receta r, usuarios u, unidades un where r.id_tip = '1' and p.cla_pro = dp.cla_pro AND dp.det_pro = dr.det_pro AND dr.id_rec = r.id_rec AND r.id_usu = u.id_usu AND u.cla_uni = un.cla_uni AND r.fecha_hora  BETWEEN '" + f1 + " 00:00:01' and '" + f2 + " 23:59:59' and dr.baja!=1 GROUP BY p.cla_pro, dr.baja  ORDER BY dp.cla_pro+0 ASC ;");
+                    rset = stmt.executeQuery("SELECT p.cla_pro, p.des_pro, sum(dr.cant_sur) as cant,((sum(dr.cant_sur))/p.amp_pro) as cajas FROM productos p, detalle_productos dp, detreceta dr, receta r, usuarios u, unidades un where r.id_tip = '1' and p.cla_pro = dp.cla_pro AND dp.det_pro = dr.det_pro AND dr.id_rec = r.id_rec AND r.id_usu = u.id_usu AND u.cla_uni = un.cla_uni AND r.fecha_hora  BETWEEN '" + f1 + " 00:00:01' and '" + f2 + " 23:59:59' and dr.baja!=1 and dr.cant_sur!=0 and un.cla_uni = '" + cla_uni + "' GROUP BY p.cla_pro, dr.baja  ORDER BY dp.cla_pro+0 ASC ;");
                     while (rset.next()) {
+
                 %>
                 <tr>
                     <td width="142" height="20"><div align="center"><%=rset.getString("cla_pro")%></div></td>
@@ -143,7 +161,7 @@
                 </tr>
                 <%
                         total = total + Integer.parseInt(rset.getString("cant"));
-                        totalCajas=totalCajas+rset.getInt("cajas");
+                        totalCajas = totalCajas + rset.getInt("cajas");
                     }
                 %>
                 <tr>

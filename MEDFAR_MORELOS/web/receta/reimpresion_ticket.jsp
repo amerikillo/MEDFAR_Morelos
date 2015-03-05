@@ -9,11 +9,10 @@
 <%@page import="java.sql.ResultSet"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<%
-    ConectionDB con = new ConectionDB();
+<%    ConectionDB con = new ConectionDB();
     HttpSession sesion = request.getSession();
     String id_usu = "";
-    String uni_ate = "", cedula = "", medico = "",ocultar="hidden",NombreUsu="";
+    String uni_ate = "", cedula = "", medico = "", ocultar = "hidden", NombreUsu = "";
     try {
         id_usu = (String) session.getAttribute("id_usu");
         uni_ate = (String) session.getAttribute("cla_uni");
@@ -46,24 +45,25 @@
     } catch (Exception e) {
 
     }
-    if(fol_rec==null || fol_rec=="0")
-        fol_rec="";
-    else
-        ocultar="";
-    if(nom_pac==null)
-        nom_pac="";
+    if (fol_rec == null || fol_rec == "0") {
+        fol_rec = "";
+    } else {
+        ocultar = "";
+    }
+    if (nom_pac == null) {
+        nom_pac = "";
+    }
     try {
         con.conectar();
-        ResultSet RsetUsu = con.consulta("SELECT nombre FROM usuarios WHERE id_usu='"+id_usu+"'");
-        if(RsetUsu.next()){
+        ResultSet RsetUsu = con.consulta("SELECT nombre FROM usuarios WHERE id_usu='" + id_usu + "'");
+        if (RsetUsu.next()) {
             NombreUsu = RsetUsu.getString(1);
         }
         con.cierraConexion();
-    }catch(Exception ex){
+    } catch (Exception ex) {
     }
-    
-    
-    %>
+
+%>
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); %>
 <%java.text.DateFormat df1 = new java.text.SimpleDateFormat("HH:mm:ss"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy");%>
@@ -80,103 +80,9 @@
         <title>SIALSS</title>
     </head>
     <body>
-        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="../main_menu.jsp">SIALSS</a>
-            </div>
-            <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <%
-                        try {
-                            if (((String) sesion.getAttribute("tipo")).equals("FARMACIA")) {
-                    %>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Receta Electronica <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="receta_farmacia.jsp">Captura de Receta</a></li>
-                            <li><a href="receta_manual.jsp">Receta Manual</a></li>
-                            <li><a href="receta/reimpresion_ticket.jsp">Reimpresión Ticket</a></li>
-                            <!--li class="dividr"></li>
-                            <li><a href="#rf">Reimpresión de Comprobantes</a></li-->
-                        </ul>
-                    </li>
-                    <!--li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Agenda<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="verAgenda.jsp">Ver Agenda</a></li>
-                    <!--li class="divider"></li>
-                    <li><a href="#rf">Reimpresión de Comprobantes</a></li>
-                </ul>
-            </li-->
-                    <%
-                    } else {
-                    %>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Mod. Farmacias<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="../farmacia/modSurteFarmacia.jsp">Surtido Receta</a></li>
-                            <li><a href="../farmacia/modSurteFarmaciaP.jsp">Surtido Receta Pendientes</a></li>
-                            <li><a href="../farmacia/modSurteFarmaciaCol.jsp">Surtido Recetas Colectivas</a></li>
-                            <li><a href="../farmacia/modRecetasSurtidas.jsp">Consultas</a></li>
-                            <li><a href="receta_colectiva.jsp">Receta Coléctiva</a></li>
-                            <li><a href="reimpresion_ticket.jsp">Reimpresión Ticket</a></li>
-                            <li><a href="reimpresion_ticket_colec.jsp">Reimpresión Ticket Colectiva</a></li>
-                            <!--li class="divider"></li>
-                            <li><a href="#rf">Reimpresión de Comprobantes</a></li-->
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <!--li><a href="../farmacia/repDiarioFarmacia.jsp">Reporte Diario por Receta</a></li>
-                            <li><a href="../farmacia/repMensFarmacia.jsp">Reporte Mensual por Receta</a></li>
-                            <li><a href="../farmacia/repConsSemanal.jsp">Consumo Semanal</a></li-->
-                            <li><a href="../farmacia/repSolSur.jsp">Solicitado / Surtido</a></li>
-                            <li><a href="../reportes/dispensadoReceta.jsp">Dispensado Receta</a></li>
-                            <li><a href="../reportes/dispensadoRecetaCol.jsp">Dispensado Receta Colectiva</a></li>
-                            <li><a href="../reportes/diarioReceta.jsp">Reporte Diario Receta</a></li>
-                            <li><a href="../reportes/diarioRecetaCol.jsp">Reporte Diario Receta Colectiva</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Existencias<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="../farmacia/existencias.jsp">Existencias</a></li>
-                            <li><a href="../farmacia/cargaAbasto.jsp">Cargar Abasto</a></li>
-                            <li><a href="../farmacia/kardex.jsp">Kardex</a></li>
-                            <!--li class="divider"></li>
-                            <li><a href="#rf">Reimpresión de Comprobantes</a></li-->
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administración de Pacientes<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="../admin/pacientes/pacientes.jsp">Pacientes</a></li>
-                            <!--li><a href="pacientes/alta_pacientes.jsp">Alta de Pacientes</a></li>
-                            <li><a href="pacientes/editar_paciente.jsp">Edición de Pacientes</a></li>
-                            <!--li class="divider"></li>
-                            <li><a href="#rf">Reimpresión de Comprobantes</a></li-->
-                        </ul>
-                    </li>
-                    <%
-                            }
-                        } catch (Exception e) {
 
-                        }
-                    %>
-
-                </ul>
-                <div class="navbar-form navbar-right">
-                    <a class="btn btn-default" href="../index.jsp">Salir</a>
-                </div>
-            </div><!--/.nav-collapse -->
-        </div><br/>
+        <%@include file="../jspf/mainMenu.jspf" %>
+        <br/>
         <div class="container-fluid">
             <div class="container">
                 <div class="row">
@@ -187,90 +93,92 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <div class="row">
-                           <form class="form-horizontal" role="form" name="frmBuscar" id="frmBuscar" method="post" action=""> 
-                            <label for="fecha" class="col-sm-2 control-label">Ingrese Folio:</label>
-                            <div class="col-sm-2">
-                                <input name="folio" type="text" class="form-control" id="folio" placeholder="Folio">
-                            </div>
-                            <div class="col-sm-2">
-                                <button class="btn btn-block btn-primary" name="buscar" id="buscar">Buscar</button>
-                            </div>
-                           </form>
+                            <form class="form-horizontal" role="form" name="frmBuscar" id="frmBuscar" method="post" action=""> 
+                                <label for="fecha" class="col-sm-2 control-label">Ingrese Folio:</label>
+                                <div class="col-sm-2">
+                                    <input name="folio" type="text" class="form-control" id="folio" placeholder="Folio">
+                                </div>
+                                <div class="col-sm-2">
+                                    <button class="btn btn-block btn-primary" name="buscar" id="buscar">Buscar</button>
+                                </div>
+                            </form>
                         </div><hr/>
                         <div class="row <%=ocultar%>">
                             <div class="panel-heading">
                                 <%
                                     ResultSet rset;
-                                    int fol=0,id_rec=0;
-                                    String paciente="",fecha="",sexo="",carnet="",num_afi="";
+                                    int fol = 0, id_rec = 0;
+                                    String paciente = "", fecha = "", sexo = "", carnet = "", num_afi = "";
                                     try {
-                                        con.conectar();     
-                                         rset= con.consulta("SELECT DISTINCT(fol_rec), nom_com, fecha_hora, id_rec, sexo, afi, expe, medico, cedula, uni from recetas where fol_rec like '%" + fol_rec + "%' and nom_com like '%" + nom_pac + "%'  and baja=0 and id_tip='1' order by id_rec asc;");
-                                         //rset= con.consulta("SELECT DISTINCT(fol_rec), nom_com, fecha_hora, id_rec from recetas where fol_rec like '%" + fol_rec + "%' and nom_com like '%" + nom_pac + "%'  and baja=0 and id_tip='1' order by id_rec asc ;");
+                                        con.conectar();
+                                        rset = con.consulta("SELECT DISTINCT(fol_rec), nom_com, fecha_hora, id_rec, sexo, afi, expe, medico, cedula, uni from recetas where fol_rec like '%" + fol_rec + "%' and nom_com like '%" + nom_pac + "%'  and transito=0 and id_tip='1' order by id_rec asc;");
+                                        //rset= con.consulta("SELECT DISTINCT(fol_rec), nom_com, fecha_hora, id_rec from recetas where fol_rec like '%" + fol_rec + "%' and nom_com like '%" + nom_pac + "%'  and baja=0 and id_tip='1' order by id_rec asc ;");
                                         while (rset.next()) {
-                                            fol=rset.getInt(1);
-                                            id_rec=rset.getInt(4);
-                                            paciente=rset.getString(2);
-                                            fecha=rset.getString(3);
-                                            uni_ate=rset.getString(10);
-                                            medico=rset.getString(8);
-                                            cedula=rset.getString(9);
-                                            sexo=rset.getString(5);
+                                            fol = rset.getInt(1);
+                                            id_rec = rset.getInt(4);
+                                            paciente = rset.getString(2);
+                                            fecha = rset.getString(3);
+                                            uni_ate = rset.getString(10);
+                                            medico = rset.getString(8);
+                                            cedula = rset.getString(9);
+                                            sexo = rset.getString(5);
                                             //fec_nac=rset.getString()
-                                            carnet=rset.getString(7);
-                                            num_afi=rset.getString(6);
+                                            carnet = rset.getString(7);
+                                            num_afi = rset.getString(6);
                                         }
-                                        
-                                    }catch(Exception ex){
-                                        
-                                    }String msg="";
-                                    if(fol==0){
-                                        ocultar="hidden";msg="Folio no Encontrado";
+
+                                    } catch (Exception ex) {
+
+                                    }
+                                    String msg = "";
+                                    if (fol == 0) {
+                                        ocultar = "hidden";
+                                        msg = "Folio no Encontrado";
                                     }
                                 %>
                                 <div class="row <%=ocultar%> " id="pnBus">
                                     <div class="panel-body">
-                            <div class="row">
-                                <label for="fecha" class="col-sm-2 control-label"> Unidad de Salud:</label>
-                                <div class="col-md-10">
-                                    <input type="text" class="form-control" id="uni_ate" readonly name="uni_ate" placeholder="" value="<%=uni_ate%>"/>
-                                </div>
-                            </div>
-                            <br />
-                            <div class="row">
-                                <label for="fecha" class="col-sm-1 control-label"> Médico:</label>
-                                <div class="col-md-4">
-                                    <input type="text" class="form-control" id="medico" readonly name="medico" placeholder="" value="<%=medico%>"/>
-                                </div>
-                                <label for="fecha" class="col-sm-1 control-label"> Cédula:</label>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" id="cedula" readonly name="cedula" placeholder="" value="<%=cedula%>"/>
-                                </div>
-                            </div><hr/>
-                        <div class="row">
-                            <br/>
-                            <label for="nom_pac" class="col-sm-1 control-label">Paciente</label>
-                            <div class="col-sm-4">
-                                <input name="nom_pac" type="text" class="form-control" id="nom_pac" placeholder="Paciente"  value="<%=paciente%>" readonly/>
-                            </div>
-                            <label for="sexo" class="col-sm-1 control-label">Sexo</label>
-                            <div class="col-sm-1">
-                                <input name="sexo" type="text" class="form-control" id="sexo" placeholder="Sexo"  value="<%=sexo%>" readonly/>
-                            </div>
-                            
-                        </div>
-                        <br>
-                        <div class="row">
-                            <label for="fol_sp" class="col-sm-1 control-label">Folio SP.</label>
-                            <div class="col-sm-3">
-                                <input name="fol_sp" type="text" class="form-control" id="fol_sp" placeholder="Folio SP."  value="<%=num_afi%>" readonly/>
-                            </div>
-                            <label for="carnet" class="col-sm-1 control-label">Expediente</label>
-                            <div class="col-sm-2">
-                                <input type="text" class="form-control" id="carnet" name="carnet" onkeypress="return tabular(event, this);" placeholder="Expediente"  value="<%=carnet%>" readonly=""/>
-                            </div>
-                        </div>
-                        </div>
+                                        <div class="row">
+                                            <label for="fecha" class="col-sm-2 control-label"> Unidad de Salud:</label>
+                                            <div class="col-md-10">
+                                                <input type="text" class="form-control" id="uni_ate" readonly name="uni_ate" placeholder="" value="<%=uni_ate%>"/>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <label for="fecha" class="col-sm-1 control-label"> Médico:</label>
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control" id="medico" readonly name="medico" placeholder="" value="<%=medico%>"/>
+                                            </div>
+                                            <label for="fecha" class="col-sm-1 control-label"> Cédula:</label>
+                                            <div class="col-md-2">
+                                                <input type="text" class="form-control" id="cedula" readonly name="cedula" placeholder="" value="<%=cedula%>"/>
+                                            </div>
+                                        </div><hr/>
+                                        <div class="row">
+                                            <br/>
+                                            <label for="nom_pac" class="col-sm-1 control-label">Paciente</label>
+                                            <div class="col-sm-4">
+                                                <input name="nom_pac" type="text" class="form-control" id="nom_pac" placeholder="Paciente"  value="<%=paciente%>" readonly/>
+                                            </div>
+                                            <label for="sexo" class="col-sm-1 control-label">Sexo</label>
+                                            <div class="col-sm-1">
+                                                <input name="sexo" type="text" class="form-control" id="sexo" placeholder="Sexo"  value="<%=sexo%>" readonly/>
+                                            </div>
+
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <label for="fol_sp" class="col-sm-1 control-label">Folio SP.</label>
+                                            <div class="col-sm-3">
+                                                <input name="fol_sp" type="text" class="form-control" id="fol_sp" placeholder="Folio SP."  value="<%=num_afi%>" readonly/>
+                                            </div>
+                                            <label for="carnet" class="col-sm-1 control-label">Expediente</label>
+                                            <div class="col-sm-2">
+                                                <input type="text" class="form-control" id="carnet" name="carnet" onkeypress="return tabular(event, this);" placeholder="Expediente"  value="<%=carnet%>" readonly=""/>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="col-sm-3">
                                         <h4 class="control-label ">Folio: <%=fol%></h4>
                                     </div>
@@ -280,15 +188,16 @@
                                         <%
                                             String fol_det = "";
                                             try {
-                                                ResultSet rset2 = con.consulta("select fol_det from detreceta where id_rec = '" + id_rec+ "' ");
+                                                ResultSet rset2 = con.consulta("select fol_det from detreceta where id_rec = '" + id_rec + "' and cant_sur!=0 ");
                                                 while (rset2.next()) {
                                                     fol_det = fol_det + rset2.getString(1) + ",";
                                                 }
                                             } catch (Exception e) {
 
                                             }
-                                            if(fecha.equals(""))
-                                                fecha="2015-01-01 00:00:00";
+                                            if (fecha.equals("")) {
+                                                fecha = "2015-01-01 00:00:00";
+                                            }
                                         %>
 
                                         <input class="hidden" name="fol_det" value="<%=fol_det%>" />
@@ -313,9 +222,9 @@
                                             <td>Lote/Caducidad</td>
                                         </tr>
                                         <%
-                                            int F_sur=0;
+                                            int F_sur = 0;
                                             //ResultSet rset2 = con.consulta("select cla_pro, des_pro, can_sol, cant_sur, fol_det, lote,DATE_FORMAT(caducidad,'%d/%m/%Y') AS caducidad from recetas where fol_rec = '" + rset.getString(1) + "' and cant_sur!=0 ");
-                                            ResultSet rset2 = con.consulta("select cla_pro, des_pro, can_sol, cant_sur, fol_det, lote,DATE_FORMAT(caducidad,'%d/%m/%Y') AS caducidad from recetas where fol_rec = '" + fol + "'  ");
+                                            ResultSet rset2 = con.consulta("select cla_pro, des_pro, can_sol, cant_sur, fol_det, lote,DATE_FORMAT(caducidad,'%d/%m/%Y') AS caducidad from recetas where fol_rec = '" + fol + "' and (can_sol!=0)  ");
                                             while (rset2.next()) {
                                                 F_sur = rset2.getInt("cant_sur");
                                         %>
@@ -323,11 +232,11 @@
                                             <td><%=rset2.getString(1)%></td>
                                             <td><%=rset2.getString(2)%></td>                                                        
                                             <td><input type="text" class="form-control" value="<%=rset2.getString(3)%>" name="sol_<%=rset2.getString(5)%>" readonly="true" /></td>
-                                            <%if(F_sur>0){%>
+                                                <%if (F_sur > 0) {%>
                                             <td><input type="text" class="form-control" value="<%=rset2.getString(4)%>" name="sur_<%=rset2.getString(5)%>"readonly /></td>
-                                            <%}else{%>
+                                                <%} else {%>
                                             <td><input type="text" class="form-control" value="<%=rset2.getString(4)%>" name="sur_<%=rset2.getString(5)%>" readonly="true" /></td>
-                                            <%}%>
+                                                <%}%>
                                             <td>Lote:&nbsp;<%=rset2.getString(6)%><br />Cadu:&nbsp;<%=rset2.getString(7)%></td>
                                         </tr>
                                         <%
@@ -337,7 +246,7 @@
                                     <button class="btn-block btn btn-success" type="button" onclick="window.open('../reportes/RecetaFarm.jsp?fol_rec=<%=fol%>&tipo=4&usuario=<%=NombreUsu%>', '', 'width=1200,height=800,left=50,top=50,toolbar=no');" name="accion" value="modificar" >Imprimir</button>
                                 </div>
                             </div>
-                                <%=msg%>
+                            <%=msg%>
                         </div>
                     </div>
                 </div>

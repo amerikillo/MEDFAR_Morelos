@@ -1,74 +1,115 @@
 <%-- any content can be specified here e.g.: --%>
 <%@ page pageEncoding="UTF-8" %>
-         <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/MEDFAR_MORELOS/main_menu.jsp">SIALSS</a>
-            </div>
-            <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">M&oacute;dulo Farmacias<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/MEDFAR_MORELOS/farmacia/modSurteFarmacia.jsp">Surtido Receta</a></li>
-                            <li><a href="/MEDFAR_MORELOS/farmacia/modSurteFarmaciaP.jsp">Surtido Receta Pendientes</a></li>
-                            <li><a href="/MEDFAR_MORELOS/farmacia/modSurteFarmaciaCol.jsp">Surtido Recetas Colectivas</a></li>
-                            <li><a href="/MEDFAR_MORELOS/farmacia/modRecetasSurtidas.jsp">Consultas</a></li>
-                            <li><a href="/MEDFAR_MORELOS/receta/receta_colectiva.jsp">Receta Coléctiva</a></li>
-                            <li><a href="/MEDFAR_MORELOS/receta/reimpresion_ticket.jsp">Reimpresión Ticket</a></li>
-                            <li><a href="/MEDFAR_MORELOS/receta/reimpresion_ticket_colec.jsp">Reimpresión Ticket Colectiva</a></li>
-                            <li><a href="/MEDFAR_MORELOS/receta/receta_manual.jsp">Receta Manual</a></li>
-                            <!--li class="divider"></li>
-                            <li><a href="#rf">Reimpresión de Comprobantes</a></li-->
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <!--li><a href="repDiarioFarmacia.jsp">Reporte Diario por Receta</a></li>
-                            <li><a href="repMensFarmacia.jsp">Reporte Mensual por Receta</a></li>
-                            <li><a href="repConsSemanal.jsp">Consumo Semanal</a></li-->
-                            <li><a href="/MEDFAR_MORELOS/farmacia/repSolSur.jsp">Solicitado / Surtido</a></li>
-                            <li><a href="/MEDFAR_MORELOS/reportes/dispensadoReceta.jsp">Dispensado Receta</a></li>
-                            <li><a href="/MEDFAR_MORELOS/reportes/dispensadoRecetaCol.jsp">Dispensado Receta Colectiva</a></li>
-                            <li><a href="/MEDFAR_MORELOS/reportes/diarioReceta.jsp">Reporte Diario Receta</a></li>
-                            <li><a href="/MEDFAR_MORELOS/reportes/diarioRecetaCol.jsp">Reporte Diario Receta Colectiva</a></li>
-                            <li><a href="/MEDFAR_MORELOS/reportes/validaMesRec.jsp">Reporte Validación Mensual</a></li>
-                            <li><a href="/MEDFAR_MORELOS/reportes/validaMesCol.jsp">Reporte Validación Mensual Colectiva</a></li>
-                            <li><a href="/MEDFAR_MORELOS/reportes/rep_reabastecimiento.jsp">Reporte Reabastecimiento</a></li>
-                            <li><a href="/MEDFAR_MORELOS/reportes/rep_nivserv.jsp">Reporte Nivel de servicio</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Existencias<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/MEDFAR_MORELOS/farmacia/existencias.jsp">Existencias</a></li>
-                            <li><a href="/MEDFAR_MORELOS/farmacia/existenciasExternas.jsp">Existencias Externas</a></li>
-                            <li><a href="/MEDFAR_MORELOS/farmacia/cargaAbasto.jsp">Cargar Abasto</a></li>
-                            <li><a href="/MEDFAR_MORELOS/farmacia/kardex.jsp">Kardex</a></li>
-                            <!--li class="divider"></li>
-                            <li><a href="#rf">Reimpresión de Comprobantes</a></li-->
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administración de Pacientes<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/MEDFAR_MORELOS/admin/pacientes/pacientes.jsp">Pacientes</a></li>
-                            <!--li><a href="pacientes/alta_pacientes.jsp">Alta de Pacientes</a></li>
-                            <li><a href="pacientes/editar_paciente.jsp">Edición de Pacientes</a></li>
-                            <!--li class="divider"></li>
-                            <li><a href="#rf">Reimpresión de Comprobantes</a></li-->
-                        </ul>
-                    </li>
-                    
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/MEDFAR_MORELOS/main_menu.jsp">SIALSS</a>
+    </div>
+    <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+            <%                        try {
+                    if (((String) sesion.getAttribute("tipo")).equals("FARMACIA")) {
+            %>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Receta Electrónica <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="/MEDFAR_MORELOS/receta/receta_farmacia.jsp">Captura de Receta</a></li>
+                    <li><a href="/MEDFAR_MORELOS/receta/reimpresion_ticket.jsp">Reimpresión Ticket</a></li>
+
                 </ul>
-                <div class="navbar-form navbar-right">
-                    <a class="btn btn-default" href="/MEDFAR_MORELOS/index.jsp">Salir</a>
-                </div>
-            </div><!--/.nav-collapse -->
+            </li>
+
+            <%
+            } else if (((String) sesion.getAttribute("tipo")).equals("ADMON")) {
+            %>                    
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administración de Médicos<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="/MEDFAR_MORELOS/admin/medicos/medico.jsp">Médicos</a></li>
+
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administración de Usuarios<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="/MEDFAR_MORELOS/admin/usuario/usuario.jsp">Usuarios</a></li>
+
+                </ul>
+            </li>
+            <%
+            } else {
+            %>   
+            <!--a href="#rc">Receta Colectiva</a-->
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Módulo Farmacias<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="/MEDFAR_MORELOS/farmacia/modSurteFarmacia.jsp">Surtido Receta</a></li>
+                    <li><a href="/MEDFAR_MORELOS/farmacia/modSurteFarmaciaP.jsp">Surtido Receta Pendientes</a></li>
+                    <li><a href="/MEDFAR_MORELOS/farmacia/modSurteFarmaciaCol.jsp">Surtido Recetas Colectivas</a></li>
+                    <li><a href="/MEDFAR_MORELOS/farmacia/modRecetasSurtidas.jsp">Consultas</a></li>
+                    <li><a href="/MEDFAR_MORELOS/receta/receta_colectiva.jsp">Receta Coléctiva</a></li>
+                    <li><a href="/MEDFAR_MORELOS/receta/reimpresion_ticket.jsp">Reimpresión Ticket</a></li>
+                    <li><a href="/MEDFAR_MORELOS/receta/reimpresion_ticket_colec.jsp">Reimpresión Ticket Colectiva</a></li>
+                    <li><a href="/MEDFAR_MORELOS/receta/receta_manual.jsp">Receta Manual</a></li>
+                    <!--li class="divider"></li>
+                    <li><a href="#rf">Reimpresión de Comprobantes</a></li-->
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <!--li><a href="repDiarioFarmacia.jsp">Reporte Diario por Receta</a></li>
+                    <li><a href="repMensFarmacia.jsp">Reporte Mensual por Receta</a></li>
+                    <li><a href="repConsSemanal.jsp">Consumo Semanal</a></li-->
+                    <li><a href="/MEDFAR_MORELOS/farmacia/repSolSur.jsp">Solicitado / Surtido</a></li>
+                    <li><a href="/MEDFAR_MORELOS/reportes/dispensadoReceta.jsp">Dispensado Receta</a></li>
+                    <li><a href="/MEDFAR_MORELOS/reportes/dispensadoRecetaCol.jsp">Dispensado Receta Colectiva</a></li>
+                    <li><a href="/MEDFAR_MORELOS/reportes/diarioReceta.jsp">Reporte Diario Receta</a></li>
+                    <li><a href="/MEDFAR_MORELOS/reportes/diarioRecetaCol.jsp">Reporte Diario Receta Colectiva</a></li>
+                    <li><a href="/MEDFAR_MORELOS/reportes/validaMesRec.jsp">Reporte Validación Mensual</a></li>
+                    <li><a href="/MEDFAR_MORELOS/reportes/validaMesCol.jsp">Reporte Validación Mensual Colectiva</a></li>
+                    <li><a href="/MEDFAR_MORELOS/reportes/rep_reabastecimiento.jsp">Reporte Reabastecimiento</a></li>
+                    <li><a href="/MEDFAR_MORELOS/reportes/rep_nivserv.jsp">Reporte Nivel de servicio</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Existencias<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="/MEDFAR_MORELOS/farmacia/existencias.jsp">Existencias</a></li>
+                    <li><a href="/MEDFAR_MORELOS/farmacia/existenciasExternas.jsp">Existencias Externas</a></li>
+                    <li><a href="/MEDFAR_MORELOS/farmacia/cargaAbasto.jsp">Cargar Abasto</a></li>
+                    <li><a href="/MEDFAR_MORELOS/farmacia/kardex.jsp">Kardex</a></li>
+                    <!--li class="divider"></li>
+                    <li><a href="#rf">Reimpresión de Comprobantes</a></li-->
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administración de Pacientes<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="/MEDFAR_MORELOS/admin/pacientes/pacientes.jsp">Pacientes</a></li>
+                    <!--li><a href="pacientes/alta_pacientes.jsp">Alta de Pacientes</a></li>
+                    <li><a href="pacientes/editar_paciente.jsp">Edición de Pacientes</a></li>
+                    <!--li class="divider"></li>
+                    <li><a href="#rf">Reimpresión de Comprobantes</a></li-->
+                </ul>
+            </li>
+
+
+            <%
+                    }
+                } catch (Exception e) {
+
+                }
+            %>
+
+        </ul>
+        <div class="navbar-form navbar-right">
+            <a class="btn btn-default" href="/MEDFAR_MORELOS/index.jsp">Salir</a>
         </div>
+    </div><!--/.nav-collapse -->
+</div>

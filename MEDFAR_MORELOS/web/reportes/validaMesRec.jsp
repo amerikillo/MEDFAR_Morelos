@@ -1,8 +1,8 @@
 <%@page contentType="text/html; charset=iso-8859-1" language="java" import="java.sql.*" import="java.text.*" import="java.lang.*" import="java.util.*" import= "javax.swing.*" import="java.io.*" import="java.text.DateFormat" import="java.text.ParseException" import="java.text.SimpleDateFormat" import="java.util.Calendar" import="java.util.Date"  import="java.text.NumberFormat" import="java.util.Locale" errorPage="" %>
-<%
+<%    HttpSession sesion = request.getSession();
 //  Conexión a la BDD -------------------------------------------------------------
     Class.forName("org.gjt.mm.mysql.Driver");
-    Connection con = DriverManager.getConnection("jdbc:mysql://localhost/scr_morelos", "root", "eve9397");
+    Connection con = DriverManager.getConnection("jdbc:mysql://192.168.0.180/scr_morelos", "root", "eve9397");
     Statement stmt = con.createStatement();
     ResultSet rset = null;
 // fin objetos de conexión --------------------------------------------------------
@@ -18,7 +18,22 @@
         }
     } catch (Exception e) {
     }
+    String id_usu = "";
+    String cla_uni = "", des_uni = "";
+    try {
+        id_usu = (String) session.getAttribute("id_usu");
+    } catch (Exception e) {
+    }
+    try {
+        rset = stmt.executeQuery("select un.des_uni, us.cla_uni from usuarios us, unidades un where us.cla_uni = un.cla_uni and id_usu = '" + id_usu + "' ");
+        while (rset.next()) {
+            cla_uni = rset.getString("cla_uni");
+            des_uni = rset.getString("des_uni");
 
+        }
+    } catch (Exception e) {
+
+    }
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -40,7 +55,7 @@
             var TODAY = monthname[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
             //---------------   END LOCALIZEABLE   ---------------
         </script>
-        
+
         <style type="text/css">
             <!--
             .style1 {
@@ -98,7 +113,7 @@
             <tr bgcolor="#99CC66">
                 <td height="20" colspan="7"  bgcolor="#FFFFFF" id="dateformat">&nbsp;&nbsp; 
                     <script language="JavaScript" type="text/javascript">
-            document.write(TODAY);</script></td>
+                        document.write(TODAY);</script></td>
             </tr>
             <tr>
                 <td width="165" valign="top" bgcolor="#FFFFFF">
@@ -141,9 +156,9 @@
                                                         <tr>
                                                             <td colspan="16" class="style1" >
                                                                 <label class="h4" for="glo"> Global Receta Farmacia: </label>
-                                                                    <input name="reporte" id="glo" type="radio" value="global" checked="checked"/>&nbsp;&nbsp;                  
+                                                                <input name="reporte" id="glo" type="radio" value="global" checked="checked"/>&nbsp;&nbsp;                  
                                                                 <label class="h4" for="rec"> Desglose  Receta Farmacia:</label> 
-                                                                    <input name="reporte" id="rec" type="radio" value="receta" />
+                                                                <input name="reporte" id="rec" type="radio" value="receta" />
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -154,27 +169,37 @@
                                                                     <span class="h4 col-sm-2">Unidad: </span>
                                                                     <div class="col-sm-5">
                                                                         <select name="cla_uni" class="form-control">
-
-                                                                            <%  rset = stmt.executeQuery("select cla_uni, des_uni from unidades");
-                                                                                while (rset.next()) {
-                                                                            %>
-                                                                            <option value="<%=rset.getString("cla_uni")%>"><%=rset.getString("des_uni")%></option>
                                                                             <%
+                                                                                try {
+                                                                                    rset = stmt.executeQuery("select cla_uni, des_uni from unidades");
+                                                                                    while (rset.next()) {
+                                                                            %>
+                                                                            <option value="<%=rset.getString("cla_uni")%>"
+                                                                                    <%
+                                                                                        if (cla_uni.equals(rset.getString("cla_uni"))) {
+                                                                                            out.println("selected");
+                                                                                        }
+                                                                                    %>
+                                                                                    ><%=rset.getString("des_uni")%></option>
+                                                                            <%
+                                                                                    }
+                                                                                } catch (Exception ex) {
+                                                                                    System.out.println(ex.getMessage());
                                                                                 }
                                                                             %>
                                                                         </select>
                                                                     </div>
-                                                                        <span class="h4 col-sm-2">Origen: </span>
-                                                                        <div class="col-sm-2">
+                                                                    <span class="h4 col-sm-2">Origen: </span>
+                                                                    <div class="col-sm-2">
                                                                         <select name="ori" class="form-control">
                                                                             <!--option value="ambos">Ambos</option-->
                                                                             <option value="0">0</option>
                                                                             <option value="1">1</option>
                                                                             <option value="2">2</option>
                                                                         </select>
-                                                                        </div>
                                                                     </div>
-                                                                </td>
+                                                                </div>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <td bgcolor="#FFFFFF" colspan="15" class="style1">&nbsp;</td>
@@ -190,7 +215,7 @@
                                                                 </label>
                                                                 &nbsp;&nbsp;&nbsp;&nbsp;                                                                
                                                                 <input type="submit" name="Submit" value="Buscar" class="btn-primary btn-sm"/>
-                                                                
+
                                                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                                         </tr>
                                                         <input type="hidden" name="cmd" value="1" />
@@ -210,16 +235,16 @@
          <br />
         <br />
         <iframe src="<%=pag%>" width="1550" height="800"></iframe>         
-                <script src="../js/jquery-1.9.1.js"></script>
-                <script src="../js/bootstrap.js"></script>
-                <script src="../js/jquery-ui.js"></script>
-                <script src="../js/bootstrap-datepicker.js"></script>
-                <script>
-            $("#txtf_caduc").datepicker({minDate: 0});
-            $("#txtf_caduci").datepicker({minDate: 0});
-                </script>
-                </body>
-                </html>
-                <%
-                    con.close();
-                %>
+        <script src="../js/jquery-1.9.1.js"></script>
+        <script src="../js/bootstrap.js"></script>
+        <script src="../js/jquery-ui.js"></script>
+        <script src="../js/bootstrap-datepicker.js"></script>
+        <script>
+                        $("#txtf_caduc").datepicker({minDate: 0});
+                        $("#txtf_caduci").datepicker({minDate: 0});
+        </script>
+    </body>
+</html>
+<%
+    con.close();
+%>

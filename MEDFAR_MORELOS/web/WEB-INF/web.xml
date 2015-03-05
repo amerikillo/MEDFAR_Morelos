@@ -160,6 +160,22 @@
         <servlet-name>AutoUnidades</servlet-name>
         <servlet-class>Autocomplete.AutoUnidades</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Transferencias</servlet-name>
+        <servlet-class>Servlets.Transferencias</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>VerificaCodBar</servlet-name>
+        <servlet-class>Servlets.VerificaCodBar</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Transferencias</servlet-name>
+        <url-pattern>/Transferencias</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VerificaCodBar</servlet-name>
+        <url-pattern>/VerificaCodBar</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Receta</servlet-name>
         <url-pattern>/Receta</url-pattern>

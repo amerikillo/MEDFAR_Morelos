@@ -5,7 +5,7 @@
 <%
 //  Conexión a la BDD -------------------------------------------------------------
     Class.forName("org.gjt.mm.mysql.Driver");
-    Connection con = DriverManager.getConnection("jdbc:mysql://localhost/scr_morelos", "root", "eve9397");
+    Connection con = DriverManager.getConnection("jdbc:mysql://192.168.0.180/scr_morelos", "root", "eve9397");
     Statement stmt = con.createStatement();
     ResultSet rset = null;
     Statement stmt2 = con.createStatement();
@@ -84,7 +84,7 @@
             <tr>
                 <td width="105"><img src="../imagenes/medalfaLogo.png" width="115"/></td>
                 <td height="63" colspan="2" align="center" valign="bottom" nowrap="nowrap" bgcolor="#FFFFFF" id="logo"><div align="center">
-                        <span class="Estilo8">GOBIERNO DEL ESTADO DE M&Eacute;XICO<br />
+                        <span class="Estilo8">GOBIERNO DEL ESTADO DE MORELOS<br />
                             SECRETARIA DE SALUD</br>
 
                             REPORTE DETALLADO DE CONSUMO POR RECETA FARMACIA<br />
@@ -124,7 +124,7 @@
                                 ori = "COMPRA CONSOLIDADA";
                             }
                             if ((request.getParameter("ori")).equals("2")) {
-                                ori = "MEDALFA";
+                                ori = "GNKL";
                             }
                             if ((request.getParameter("ori")).equals("0")) {
                                 ori = "ADMON COMPRA";

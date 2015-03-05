@@ -34,9 +34,9 @@
     String origen = "";
     try {
         if (request.getParameter("id_origen").equals("1")) {
-            origen = "ISEM";
+            origen = "SSM";
         } else if (request.getParameter("id_origen").equals("2")) {
-            origen = "MEDALFA";
+            origen = "GNKL";
         } else if (request.getParameter("id_origen").equals("3")) {
             origen = "AMBOS";
         }

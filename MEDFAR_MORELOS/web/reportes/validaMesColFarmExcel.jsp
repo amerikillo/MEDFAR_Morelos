@@ -10,7 +10,7 @@ xmlns="http://www.w3.org/TR/REC-html40">
 <%
 //  Conexión a la BDD -------------------------------------------------------------
 Class.forName("org.gjt.mm.mysql.Driver");
-Connection con = DriverManager.getConnection("jdbc:mysql://localhost/scr_morelos","root","eve9397");
+Connection con = DriverManager.getConnection("jdbc:mysql://192.168.0.180/scr_morelos","root","eve9397");
 Statement stmt = con.createStatement();
 ResultSet rset= null;
 Statement stmt2 = con.createStatement();
@@ -185,9 +185,9 @@ td
 
 <table width="1320">
   <tr height="20">
-    <td height="20" colspan="11"  align="center"><p align="center">GOBIERNO DEL ESTADO DE M&Eacute;XICO</p>
+    <td height="20" colspan="11"  align="center"><p align="center">GOBIERNO DEL ESTADO DE MORELOS</p>
       <p align="center">SECRETARIA DE SALUD</p>
-      <p align="center">SAVI DISTRIBUICIONES   S.A DE C.V.</p>
+      <p align="center">GNKL</p>
       <p align="center">REPORTE DETALLDO DE CONSUMO POR RECETA COLECTIVA </p>
       <p align="center">DE LA UNIDAD: <%
 try{

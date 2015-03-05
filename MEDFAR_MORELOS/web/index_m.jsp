@@ -28,11 +28,11 @@
             <div class="text-right">
                 <!--a class="btn btn-primary" href="index_admin.jsp" target="_black">Si eres Administrador da Click Aquí</a-->
             </div>
-            
+
             <form class="form-signin" action="Login" method="GET">
-                
+
                 <div class="row">
-                    <div class="col-md-3"><h2 style="color:">M&eacute;dicos</h2   > </div>
+                    <div class="col-md-3"><h2 style="color:#FFFFFF">M&eacute;dicos</h2   > </div>
                     <div class="col-md-3"></div>
                     <div class="col-md-3"></div> 
                 </div>
@@ -52,7 +52,7 @@
                         <input type="password" name="pass" id="pass" class="form-control"  placeholder="Introduzca Contrase&ntilde;a V&aacute;lida">
                     </div>
                     <%
-                        if (info!=null) {
+                        if (info != null) {
                     %>
                     <div class="input-group">
                         <div>Datos inv&aacute;lidos, intente otra vez...</div>
@@ -63,11 +63,11 @@
                     <button class="btn btn-lg btn-primary btn-block" type="submit" name="accion" value="2">Entrar</button>
                 </div>
             </form>
-                    <div class="row" >
-                        <div class="col-md-4"></div>
-                        <div class="col-md-4"><h4 class="left"><a href="index.jsp"><font color="black">Regresar a Men&uacute;</font></a></h4></div>                        
-                        <div class="col-md-4"></div>
-                    </div>
+            <div class="row" >
+                <div class="col-md-4"></div>
+                <div class="col-md-4"><h4 class="left"><a href="index.jsp"><font color="white">Regresar a Men&uacute;</font></a></h4></div>                        
+                <div class="col-md-4"></div>
+            </div>
         </div>
     </body>
 </html>

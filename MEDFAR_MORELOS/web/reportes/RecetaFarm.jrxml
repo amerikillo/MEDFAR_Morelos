@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RecetaFarm" language="groovy" pageWidth="612" pageHeight="792" columnWidth="286" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2fda1041-b7d7-4df7-9ae3-2c5be94a54e2">
 	<property name="ireport.zoom" value="1.4641000000000035"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="352"/>
+	<property name="ireport.y" value="0"/>
 	<style name="Crosstab Data Text" hAlign="Center"/>
 	<style name="table">
 		<box>
@@ -218,7 +218,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select * from recetas where fol_rec=$P{folio} GROUP BY fol_rec]]>
+		<![CDATA[select * from recetas where fol_rec=$P{folio} and cant_sur!=0 GROUP BY fol_rec]]>
 	</queryString>
 	<field name="fol_det" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -280,10 +280,10 @@
 	<field name="afi" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="tip_cob" class="java.lang.String">
+	<field name="sexo" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="sexo" class="java.lang.String">
+	<field name="tip_cob" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="fechan" class="java.lang.Long">
@@ -320,6 +320,12 @@
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="lotepro" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nom_ser" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombre" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<group name="dfdd">

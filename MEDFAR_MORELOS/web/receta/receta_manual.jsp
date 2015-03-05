@@ -110,112 +110,8 @@
         <title>SIALSS</title>
     </head>
     <body onload="focoInicial();">
-        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/MEDFAR_MORELOS/main_menu.jsp">SIALSS</a>
-            </div>
-            <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <%
-                        try {
-                            if (((String) sesion.getAttribute("tipo")).equals("FARMACIA")) {
-                    %>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Receta Electr&oacute;nica <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="../receta/receta_farmacia.jsp">Captura de Receta</a></li>
-                            <li><a href="../receta/receta_manual.jsp">Receta Manual</a></li>
-                            <li><a href="../receta/reimpresion_ticket.jsp">Reimpresión Ticket</a></li>
-                            
-                        </ul>
-                    </li>
-                    
-                    <%
-                    } else if (((String) sesion.getAttribute("tipo")).equals("ADMON")) {
-                    %>                    
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administración de Médicos<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="admin/medicos/medico.jsp">Médicos</a></li>
-                            
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administración de Usuarios<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="admin/usuario/usuario.jsp">Usuarios</a></li>
-                            
-                        </ul>
-                    </li>
-                    <%
-                        }else{
-                     %>   
-                     <!--a href="#rc">Receta Colectiva</a-->
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">M&oacute;dulo Farmacias<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="../farmacia/modSurteFarmacia.jsp">Surtido Receta</a></li>
-                            <li><a href="../farmacia/modSurteFarmaciaP.jsp">Surtido Receta Pendientes</a></li>
-                            <li><a href="../farmacia/modSurteFarmaciaCol.jsp">Surtido Recetas Colectivas</a></li>
-                            <li><a href="../farmacia/modRecetasSurtidas.jsp">Consultas</a></li>
-                            <li><a href="../receta_colectiva.jsp">Receta Coléctiva</a></li>                           
-                            <li><a href="reimpresion_ticket.jsp">Reimpresión Ticket</a></li>
-                            <li><a href="reimpresion_ticket_colec.jsp">Reimpresión Ticket Colectiva</a></li>
-                            <li><a href="/MEDFAR_MORELOS/receta/receta_manual.jsp">Receta Manual</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            
-                            <li><a href="../farmacia/repSolSur.jsp">Solicitado / Surtido</a></li>
-                            <li><a href="../reportes/dispensadoReceta.jsp">Dispensado Receta</a></li>
-                            <li><a href="../reportes/dispensadoRecetaCol.jsp">Dispensado Receta Colectiva</a></li>
-                            <li><a href="../reportes/diarioReceta.jsp">Reporte Diario Receta</a></li>
-                            <li><a href="../reportes/diarioRecetaCol.jsp">Reporte Diario Receta Colectiva</a></li>
-                            <li><a href="/MEDFAR_MORELOS/reportes/validaMesRec.jsp">Reporte Validación Mensual</a></li>
-                            <li><a href="/MEDFAR_MORELOS/reportes/validaMesCol.jsp">Reporte Validación Mensual Colectiva</a></li>
-                            <li><a href="/MEDFAR_MORELOS/reportes/rep_reabastecimiento.jsp">Reporte Reabastecimiento</a></li>
-                            <li><a href="/MEDFAR_MORELOS/reportes/rep_nivserv.jsp">Reporte Nivel de servicio</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Existencias<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="../farmacia/existencias.jsp">Existencias</a></li>
-                            <li><a href="../farmacia/cargaAbasto.jsp">Cargar Abasto</a></li>
-                            <li><a href="../farmacia/kardex.jsp">Kardex</a></li>
-                           
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administración de Pacientes<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="../admin/pacientes/pacientes.jsp">Pacientes</a></li>
-                            
-                        </ul>
-                    </li>
-                     
-                     
-                       <% 
-                    }
-                        } catch (Exception e) {
-
-                        }
-                    %>
-
-                </ul>
-                <div class="navbar-form navbar-right">
-                    <a class="btn btn-default" href="../index.jsp">Salir</a>
-                </div>
-            </div><!--/.nav-collapse -->
-        </div><br/>
+        <%@include file="../jspf/mainMenu.jspf" %>
+        <br/>
 
         <div class="container-fluid">
             <div class="container">
@@ -311,7 +207,7 @@
                                 </div>
                                 <div class="col-sm-2">
                                     <button class="btn btn-block btn-primary" name="mostrar2" id="mostrar2">Mostrar</button>
-                                    <a href="../admin/pacientes/pacientes1.jsp" class="btn btn-success" target="_blank">Ver Pacientes</a></div>
+                                    <a href="#" onclick="window.open('../admin/pacientes/pacientes1.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')" class="btn btn-success">Ver Pacientes</a></div>
                             </div>
                         </div>
                         <div class="row">
@@ -361,7 +257,7 @@
                             </div>
                         </div>
                         <div class="text-right">
-                            <a href="../farmacia/existencias1.jsp" class="btn btn-success" target="_blank">Ver inventario</a></div>
+                            <a href="#" onclick="window.open('../farmacia/existencias1.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')" class="btn btn-success">Ver inventario</a></div>
                         <br>
                         <div class="row">
                             <label for="existencias" class="col-sm-2 control-label">Existencias:</label>
@@ -560,7 +456,7 @@
         <script src="../js/js_manual.js"></script>
         <script>
 
-                                            $('#tablaMedicamento').load('receta_manual.jsp #tablaMedicamento');
+                                            //$('#tablaMedicamento').load('receta_manual.jsp #tablaMedicamento');
                                             $('#tablaBotones').load('receta_manual.jsp #tablaBotones');
                                             /*
                                              * 

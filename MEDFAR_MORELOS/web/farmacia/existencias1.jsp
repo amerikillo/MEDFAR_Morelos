@@ -73,7 +73,6 @@
     <body>
         
         
-        <%@include file="../jspf/mainMenu.jspf"%>
 
         <div class="container-fluid">
             <div class="container">

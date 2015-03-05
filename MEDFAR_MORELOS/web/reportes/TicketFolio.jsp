@@ -27,7 +27,7 @@
     }
     Connection conexion;
     Class.forName("com.mysql.jdbc.Driver").newInstance();
-    conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/scr", "root", "eve9397");
+    conexion = DriverManager.getConnection("jdbc:mysql://192.168.0.180:3306/scr", "root", "eve9397");
     /*Establecemos la ruta del reporte*/
     File reportFile = new File(application.getRealPath("reportes/folReceta.jasper"));
     /* No enviamos parámetros porque nuestro reporte no los necesita asi que escriba 

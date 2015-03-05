@@ -34,15 +34,32 @@
     String origen = "";
     try {
         if (request.getParameter("id_origen").equals("1")) {
-            origen = "ISEM";
+            origen = "SSM";
         } else if (request.getParameter("id_origen").equals("2")) {
-            origen = "MEDALFA";
+            origen = "GNKL";
         } else if (request.getParameter("id_origen").equals("3")) {
             origen = "AMBOS";
         }
     } catch (Exception e) {
     }
+    String id_usu = "";
+    String cla_uni = "", des_uni = "";
+    try {
+        id_usu = (String) session.getAttribute("id_usu");
+    } catch (Exception e) {
+    }
+    try {
+        con.conectar();
+        ResultSet rset = con.consulta("select un.des_uni, us.cla_uni from usuarios us, unidades un where us.cla_uni = un.cla_uni and id_usu = '" + id_usu + "' ");
+        while (rset.next()) {
+            cla_uni = rset.getString("cla_uni");
+            des_uni = rset.getString("des_uni");
+            
+        }
+        con.cierraConexion();
+    } catch (Exception e) {
 
+    }
 %>
 <html>
     <head>
@@ -58,9 +75,10 @@
 
         %>
         <div class="text-center">
-            GOBIERNO DEL ESTADO DE MÉXICO <br/>
+            GOBIERNO DEL ESTADO DE MORELOS <br/>
             SECRETARIA DE SALUD <br/>
-            MEDALFA S.A DE C.V <br/>
+            GNKL <br/>
+            <%=des_uni%> <br/>
             REPORTE POR CLAVE DEL CONSUMO POR RECETA  <br/>            
             PERIODO: <%=request.getParameter("hora_ini")%> al <%=request.getParameter("hora_fin")%>  <br/>                        
         </div>
@@ -86,7 +104,7 @@
             </tr>
             <%
                 con.conectar();
-                ResultSet rset = con.consulta("select r.cla_pro,r.des_pro,sum(can_sol) as can_sol,sum(cant_sur) as cant_sur, ((sum(can_sol))/amp_pro) as caj_sol, ((sum(cant_sur))/amp_pro) as caj_sur from repsolsur r, productos p  where r.cla_pro = p.cla_pro and fec_sur between '" + request.getParameter("hora_ini") + "' and '" + request.getParameter("hora_fin") + "' group by cla_pro order by r.cla_pro+0 ");
+                ResultSet rset = con.consulta("select r.cla_pro,r.des_pro,sum(can_sol) as can_sol,sum(cant_sur) as cant_sur, ((sum(can_sol))/amp_pro) as caj_sol, ((sum(cant_sur))/amp_pro) as caj_sur from repsolsur r, productos p, usuarios usu, unidades uni  where r.id_usu = usu.id_usu and usu.cla_uni = uni.cla_uni and uni.cla_uni = '" + cla_uni + "' and r.cla_pro = p.cla_pro and fec_sur between '" + request.getParameter("hora_ini") + "' and '" + request.getParameter("hora_fin") + "'  group by cla_pro order by r.cla_pro+0 ");
                 while (rset.next()) {
                     //System.out.println(rset.getString("cla_pro"));
                     //System.out.println("holaa");
@@ -112,7 +130,7 @@
                 <td>Totales</td>
                 <%
                     try {
-                        double totalSol=0, totalSur=0;
+                        double totalSol = 0, totalSur = 0;
                         con.conectar();
                         ResultSet rset = con.consulta("select sum(can_sol), sum(cant_sur) from repsolsur where fec_sur between '" + request.getParameter("hora_ini") + "' and '" + request.getParameter("hora_fin") + "' ");
                         while (rset.next()) {
@@ -120,19 +138,19 @@
                 <td class="text-right"><%=formatter.format(rset.getInt(1))%></td>
                 <td class="text-right"><%=formatter.format(rset.getInt(2))%></td>
                 <%
-                        }
-                        double cajasSol=0;
-                        double cajasSur=0;
-                        rset = con.consulta("select (SUM(can_sol)/amp_pro), (SUM(cant_sur)/amp_pro) from repsolsur r, productos p where r.cla_pro = p.cla_pro and fec_sur between '" + request.getParameter("hora_ini") + "' and '" + request.getParameter("hora_fin") + "' group by r.cla_pro");
-                        while (rset.next()) {
-                            cajasSol=cajasSol+Math.floor(rset.getDouble(1));
-                            cajasSur=cajasSur+Math.floor(rset.getDouble(2));
-                        }
+                    }
+                    double cajasSol = 0;
+                    double cajasSur = 0;
+                    rset = con.consulta("select (SUM(can_sol)/amp_pro), (SUM(cant_sur)/amp_pro) from repsolsur r, productos p where r.cla_pro = p.cla_pro and fec_sur between '" + request.getParameter("hora_ini") + "' and '" + request.getParameter("hora_fin") + "' group by r.cla_pro");
+                    while (rset.next()) {
+                        cajasSol = cajasSol + Math.floor(rset.getDouble(1));
+                        cajasSur = cajasSur + Math.floor(rset.getDouble(2));
+                    }
                 %>
                 <td class="text-right"><%=formatter.format(cajasSol)%></td>
                 <td class="text-right"><%=formatter.format(cajasSur)%></td>
                 <%
-                        
+
                         con.cierraConexion();
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
@@ -152,7 +170,7 @@
                         Administrador de la Unidad
                     </div>
                     <div style="float: right">
-                        Filtro de la Secretaría de Salud del Estado de México
+                        Filtro de la Secretaría de Salud del Estado de Morelos
                     </div>
                     <div style="text-align: center ">
                         Encargado de la Farmacia

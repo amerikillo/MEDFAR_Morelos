@@ -37,9 +37,9 @@
     String origen = "";
     try {
         if (request.getParameter("id_origen").equals("1")) {
-            origen = "SSD";
+            origen = "SSM";
         } else if (request.getParameter("id_origen").equals("2")) {
-            origen = "MEDALFA";
+            origen = "GNKL";
         }
     } catch (Exception e) {
     }
@@ -59,9 +59,9 @@
 
         %>
         <div style="text-align: center; width: 800px;" class="letra">
-            GOBIERNO DEL ESTADO DE MEXICO <br/>
+            GOBIERNO DEL ESTADO DE MORELOS <br/>
             SECRETARIA DE SALUD <br/>
-            MEDALFA S.A DE C.V <br/>
+            GNKL <br/>
             REPORTE POR CLAVE DEL CONSUMO POR RECETA  <br/>               
             PERIODO: <%=request.getParameter("hora_ini")%> al <%=request.getParameter("hora_fin")%>  <br/>            
         </div>
@@ -153,7 +153,7 @@
                         Administrador de la Unidad
                     </div>
                     <div style="float: right">
-                        Filtro de la Secretaría de Salud del Estado de México
+                        Filtro de la Secretaría de Salud del Estado de Morelos
                     </div>
                     <div style="text-align: center ">
                         Encargado de la Farmacia

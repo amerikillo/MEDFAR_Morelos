@@ -68,14 +68,18 @@ public class Farmacias extends HttpServlet {
                         if (!folios2[x].equals("")) {
                             String sol2 = request.getParameter("sol_" + folios2[x]);
                             String sur2 = request.getParameter("sur_" + folios2[x]);
-                            if (Integer.parseInt(sur2) == Integer.parseInt(sol2)) {
-                                con.insertar("update receta set transito = '0' where id_rec = '" + request.getParameter("id_rec") + "'  ");
+                            if (sur2 != null) {
+                                if (Integer.parseInt(sur2) == Integer.parseInt(sol2)) {
+                                    con.insertar("update receta set transito = '0' where id_rec = '" + request.getParameter("id_rec") + "'  ");
+                                } else {
+                                    con.insertar("update receta set transito = '0',baja='2' where id_rec = '" + request.getParameter("id_rec") + "'  ");
+                                }
+                                ResultSet rset = con.consulta("SELECT id_tip FROM receta WHERE fol_rec='" + request.getParameter("fol_rec") + "' GROUP BY id_tip");
+                                if (rset.next()) {
+                                    idtip = rset.getString("id_tip");
+                                }
                             } else {
                                 con.insertar("update receta set transito = '0',baja='2' where id_rec = '" + request.getParameter("id_rec") + "'  ");
-                            }
-                            ResultSet rset = con.consulta("SELECT id_tip FROM receta WHERE fol_rec='" + request.getParameter("fol_rec") + "' GROUP BY id_tip");
-                            if (rset.next()) {
-                                idtip = rset.getString("id_tip");
                             }
                         }
                     }
@@ -119,7 +123,7 @@ public class Farmacias extends HttpServlet {
                             int sur21 = Integer.parseInt(sur2);
                             int sur = sur21;
                             int total = sur12 + sur21;
-                            rset5 = con.consulta("SELECT i.id_inv, DP.det_pro, P.cla_pro, P.des_pro, DP.cad_pro, DP.lot_pro, I.cant, DP.cla_fin, DP.id_ori FROM detalle_productos DP, productos P, inventario I, unidades U, usuarios US WHERE DP.cla_pro = P.cla_pro AND DP.det_pro = I.det_pro AND I.cla_uni = U.cla_uni AND US.cla_uni = U.cla_uni AND P.cla_pro = '" + clave + "' AND US.id_usu='" + sesion.getAttribute("id_usu") + "' and DP.cad_pro between '" + fecha1 + "' and '" + fecha2 + "' AND cant>0 ORDER BY  DP.id_ori, DP.cad_pro, I.cant ASC ");
+                            rset5 = con.consulta("SELECT I.id_inv, DP.det_pro, P.cla_pro, P.des_pro, DP.cad_pro, DP.lot_pro, I.cant, DP.cla_fin, DP.id_ori FROM detalle_productos DP, productos P, inventario I, unidades U, usuarios US WHERE DP.cla_pro = P.cla_pro AND DP.det_pro = I.det_pro AND I.cla_uni = U.cla_uni AND US.cla_uni = U.cla_uni AND P.cla_pro = '" + clave + "' AND US.id_usu='" + sesion.getAttribute("id_usu") + "' and DP.cad_pro between '" + fecha1 + "' and '" + fecha2 + "' AND cant>0 ORDER BY  DP.id_ori, DP.cad_pro, I.cant ASC ");
                             while (rset5.next()) {
                                 if (Integer.parseInt(rset5.getString("cant")) > 0) {
                                     rset2 = con.consulta("SELECT cause,cla_pro,lote,caducidad,indicaciones,fol_det,det_pro FROM recetas WHERE id_rec='" + request.getParameter("id_rec") + "' and can_sol='" + sol2 + "' and cant_sur='" + sur1 + "' and cla_pro='" + clave + "'");
@@ -180,7 +184,7 @@ public class Farmacias extends HttpServlet {
 
                                     } else {
                                         if (dife > 0) {
-                                            rset = con.consulta("SELECT i.id_inv, DP.det_pro, P.cla_pro, P.des_pro, DP.cad_pro, DP.lot_pro, I.cant, DP.cla_fin, DP.id_ori FROM detalle_productos DP, productos P, inventario I, unidades U, usuarios US WHERE DP.cla_pro = P.cla_pro AND DP.det_pro = I.det_pro AND I.cla_uni = U.cla_uni AND US.cla_uni = U.cla_uni AND P.cla_pro = '" + clave + "' AND US.id_usu='" + sesion.getAttribute("id_usu") + "' and DP.cad_pro between '" + fecha1 + "' and '" + fecha2 + "' AND cant>0 ORDER BY  DP.id_ori, DP.cad_pro, I.cant ASC ");
+                                            rset = con.consulta("SELECT I.id_inv, DP.det_pro, P.cla_pro, P.des_pro, DP.cad_pro, DP.lot_pro, I.cant, DP.cla_fin, DP.id_ori FROM detalle_productos DP, productos P, inventario I, unidades U, usuarios US WHERE DP.cla_pro = P.cla_pro AND DP.det_pro = I.det_pro AND I.cla_uni = U.cla_uni AND US.cla_uni = U.cla_uni AND P.cla_pro = '" + clave + "' AND US.id_usu='" + sesion.getAttribute("id_usu") + "' and DP.cad_pro between '" + fecha1 + "' and '" + fecha2 + "' AND cant>0 ORDER BY  DP.id_ori, DP.cad_pro, I.cant ASC ");
                                             while (rset.next()) {
                                                 det_pro = rset.getString("det_pro");
                                                 if (Integer.parseInt(rset.getString("cant")) > 0) {

@@ -18,7 +18,7 @@
         formatterDecimal.setDecimalFormatSymbols(custom);
         // Conexion BDD via JDBC
         Class.forName("org.gjt.mm.mysql.Driver");
-        Connection con = DriverManager.getConnection("jdbc:mysql://localhost/scr_morelos", "root", "eve9397");
+        Connection con = DriverManager.getConnection("jdbc:mysql://192.168.0.180/scr_morelos", "root", "eve9397");
         Statement stmt = con.createStatement();
         ResultSet rset = null;
         // fin conexion --------
@@ -238,7 +238,7 @@
                                             <td width="42"   style="border:double"><div align="center">CANTIDAD</div></td>
                                         </tr>
                                         <%
-                                            rset = stmt.executeQuery("SELECT p.cla_pro, p.des_pro, sum(dr.cant_sur) as cant ,(sum(dr.cant_sur))/p.amp_pro as cajas FROM productos p, detalle_productos dp, detreceta dr, receta r, usuarios u, unidades un where r.id_tip = '2' and p.cla_pro = dp.cla_pro AND dp.det_pro = dr.det_pro AND dr.id_rec = r.id_rec AND r.id_usu = u.id_usu AND u.cla_uni = un.cla_uni AND r.fecha_hora  BETWEEN '" + f1 + " 00:00:01' and '" + f2 + " 23:59:59' and dr.baja!=1 GROUP BY p.cla_pro, dr.baja  ORDER BY dp.cla_pro+0 ASC ;");
+                                            rset = stmt.executeQuery("SELECT p.cla_pro, p.des_pro, sum(dr.cant_sur) as cant,((sum(dr.cant_sur))/p.amp_pro) as cajas FROM productos p, detalle_productos dp, detreceta dr, receta r, usuarios u, unidades un where r.id_tip = '2' and p.cla_pro = dp.cla_pro AND dp.det_pro = dr.det_pro AND dr.id_rec = r.id_rec AND r.id_usu = u.id_usu AND u.cla_uni = un.cla_uni AND r.fecha_hora  BETWEEN '" + f1 + " 00:00:01' and '" + f2 + " 23:59:59' and dr.baja!=1 and dr.cant_sur!=0 and un.cla_uni = '" + request.getParameter("cla_uni") + "' GROUP BY p.cla_pro, dr.baja  ORDER BY dp.cla_pro+0 ASC ;");
                                             while (rset.next()) {
                                         %>
                                         <tr>

@@ -8,8 +8,7 @@
 <%@page import="java.sql.ResultSet"%>
 <%@page import="Clases.ConectionDB"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-    HttpSession sesion = request.getSession();
+<%    HttpSession sesion = request.getSession();
     String id_usu = "";
     ConectionDB con = new ConectionDB();
     try {
@@ -52,8 +51,8 @@
         <div class="container-fluid">
             <div class="container" style="width: 600px;">
                 <h2>Cargar Abasto</h2>
-                
-                <form name="cargaAbasto" method="POST" enctype="multipart/form-data" action="../FileUploadServlet">
+
+                <form name="cargaAbasto" id="cargaAbasto" onsubmit="muestraImagen()" method="POST" enctype="multipart/form-data" action="../FileUploadServlet">
                     <div class="row">
                         <label class="form-horizontal col-lg-4">Seleccione un archivo:</label>
                         <div class="col-lg-8">
@@ -69,19 +68,22 @@
                     </div>
                     <br />
                     <div class="col-lg-12">
-                        <button class="btn btn-primary btn-block" onclick="return comparaClave();">Cargar</button>
+                        <button class="btn btn-primary btn-block" onclick="return comparaClave();" id="btnCarga">Cargar</button>
                     </div>
                 </form>
+            </div>
+            <div class="text-center" id="imagen">
+                <img src="../imagenes/ajax-loader-1.gif" width="200" />
             </div>
         </div>
         <br>
         <br>
         <div class="row">
-                    <div class="col-md-5"></div>
-                    <div class="col-md-2"><center><img src="../imagenes/medalfaLogo.png" width=100 alt="Logo"></center></div>
-                    <div class="col-md-5"></div>
-                    
-       </div>
+            <div class="col-md-5"></div>
+            <div class="col-md-2"><center><img src="../imagenes/medalfaLogo.png" width=100 alt="Logo"></center></div>
+            <div class="col-md-5"></div>
+
+        </div>
     </body><!-- 
 ================================================== -->
     <!-- Se coloca al final del documento para que cargue mas rapido -->
@@ -101,6 +103,7 @@
 
                                 if (result === "<%=pass.get(i)%>") {
                                     alert("Datos correctos");
+                                    $('#imagen').toggle();
                                     return true;
                                 }
         <%
@@ -109,6 +112,16 @@
                                 alert("Datos incorrectos");
                                 return false;
                             }
+
+                            $(document).ready(function() {
+                                $('#imagen').toggle();
+                            });
+
+                            function muestraImagen() {
+                                $('#imagen').show();
+                                $('#btnCarga').attr('disabled', true);
+                            }
+
     </script>
 </html>
 

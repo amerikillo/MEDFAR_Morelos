@@ -554,7 +554,7 @@ $(document).ready(function() {
         var sp_pac = $('#sp_pac').val();
         var dir = '../Receta';
         var form = $('#formulario_receta');
-        if($('#folio').val()===""){
+        if ($('#folio').val() === "") {
             alert("Ingrese folio");
             $('#folio').focus();
             return false;
@@ -668,7 +668,7 @@ $(document).ready(function() {
         var sp_pac = $('#sp_pac').val();
         var dir = '../RecetaNombre';
         var form = $('#formulario_receta');
-        if($('#folio').val()===""){
+        if ($('#folio').val() === "") {
             alert("Ingrese folio");
             $('#folio').focus();
             return false;
@@ -726,7 +726,7 @@ $(document).ready(function() {
         var sp_pac = $('#medico_jq').val();
         var dir = '../RecetaNombreCol';
         var form = $('#formulario_receta');
-        if($('#folio').val()===""){
+        if ($('#folio').val() === "") {
             alert("Ingrese folio");
             $('#folio').focus();
             return false;
@@ -750,7 +750,7 @@ $(document).ready(function() {
                 var nom_med = json[i].nom_med;
                 var cedula = json[i].cedula;
 
-               // $("#folio").val(fol_rec);
+                // $("#folio").val(fol_rec);
                 $("#medico").val(nom_med);
                 $("#cedula").val(cedula);
                 $("#nombre_jq").focus();

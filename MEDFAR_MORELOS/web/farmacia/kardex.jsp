@@ -15,6 +15,7 @@
     custom.setDecimalSeparator(',');
     formatter.setDecimalFormatSymbols(custom);
     ConectionDB con = new ConectionDB();
+    HttpSession sesion = request.getSession();
     String accion = "";
     accion = request.getParameter("accion");
     if (accion == null) {

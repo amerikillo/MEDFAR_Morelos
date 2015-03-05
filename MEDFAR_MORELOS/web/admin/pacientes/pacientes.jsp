@@ -13,6 +13,7 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
+    HttpSession sesion = request.getSession();
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormat formatter2 = new DecimalFormat("#,###,###.##");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();

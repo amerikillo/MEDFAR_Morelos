@@ -12,7 +12,7 @@
     formatterDecimal.setDecimalFormatSymbols(custom);
 //  Conexión a la BDD -------------------------------------------------------------
     Class.forName("org.gjt.mm.mysql.Driver");
-    Connection con = DriverManager.getConnection("jdbc:mysql://localhost/scr_morelos", "root", "eve9397");
+    Connection con = DriverManager.getConnection("jdbc:mysql://192.168.0.180/scr_morelos", "root", "eve9397");
     Statement stmt = con.createStatement();
     ResultSet rset = null;
     Statement stmt2 = con.createStatement();
@@ -144,9 +144,9 @@
         <table width="1048" border="0" align="center" cellpadding="2">
             <tr>
                 <td width="104"><img src="../imagenes/medalfaLogo.png" width="90" alt="Logo" /></td>
-                <td height="63" colspan="2" align="center" valign="bottom" nowrap="nowrap" bgcolor="#FFFFFF" id="logo"><div align="center"><span class="Estilo14">GOBIERNO DEL ESTADO DE M&Eacute;XICO<br />
+                <td height="63" colspan="2" align="center" valign="bottom" nowrap="nowrap" bgcolor="#FFFFFF" id="logo"><div align="center"><span class="Estilo14">GOBIERNO DEL ESTADO DE MORELOS<br />
                             SECRETARIA DE SALUD</br>
-                            MEDALFA S.A. DE C.V.<br />
+                            GNKL<br />
                             REPORTE GLOBAL DE CONSUMO<br />
                             DE LA UNIDAD: <br />
                             <%
@@ -182,7 +182,7 @@
                                     ori = "COMPRA CONSOLIDADA";
                                 }
                                 if ((request.getParameter("ori")).equals("2")) {
-                                    ori = "MEDALFA";
+                                    ori = "GNKL";
                                 }
                                 if ((request.getParameter("ori")).equals("0")) {
                                     ori = "ADMON COMPRA";

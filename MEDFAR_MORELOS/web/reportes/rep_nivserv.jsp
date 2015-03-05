@@ -68,6 +68,22 @@
 
     }
     con.conectar();
+
+    String cla_uni = "", des_uni = "";
+    try {
+        id_usu = (String) session.getAttribute("id_usu");
+    } catch (Exception e) {
+    }
+    try {
+        ResultSet rset = con.consulta("select un.des_uni, us.cla_uni from usuarios us, unidades un where us.cla_uni = un.cla_uni and id_usu = '" + id_usu + "' ");
+        while (rset.next()) {
+            cla_uni = rset.getString("cla_uni");
+            des_uni = rset.getString("des_uni");
+
+        }
+    } catch (Exception e) {
+
+    }
 %>
 <html>
     <head>
@@ -98,7 +114,7 @@
         </div>
         <div style="background-color:#FFFFFF; padding:10px; width:800; margin:auto" >
             <div>
-                
+
             </div>
             <form action="rep_nivserv.jsp?cla_uni=<%=request.getParameter("cla_uni")%>" method="post">
                 <h3>Seleccione las fechas de la consulta.</h3>
@@ -169,7 +185,7 @@
                             %>
                             <tr>
                                 <%
-                                    String qry_fecha = "select fec_sur from detreceta where fec_sur BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' group by fec_sur";
+                                    String qry_fecha = "select fec_sur from recetaConcentrado where cla_uni = '" + cla_uni + "' and fec_sur BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' group by fec_sur";
                                     ResultSet rset = con.consulta(qry_fecha);
                                     while (rset.next()) {
                                         fecha = df2.format(df.parse(rset.getString("fec_sur")));
@@ -181,7 +197,7 @@
                                 <td><strong>Totales</strong></td>
                             </tr>
                             <%
-                                String qry_pzsol = "select sum(can_sol) as sol, r.fecha_hora from receta r, detreceta dr where r.id_rec = dr.id_rec AND r.fecha_hora BETWEEN '" + fecha1 + " 00:00:01' and '" + fecha2 + " 23:59:59' group by DAY(fecha_hora) ;";
+                                String qry_pzsol = "select sum(can_sol) as sol, fecha_hora from recetaConcentrado where fecha_hora BETWEEN '" + fecha1 + " 00:00:01' and '" + fecha2 + " 23:59:59' and cla_uni = '" + cla_uni + "' group by DAY(fecha_hora) ;";
                     //String qry_pzsol="select sum(can_sol) as sol, fec_sur from detreceta where fec_sur BETWEEN '"+fecha1+"' AND '"+fecha2+"' group by fec_sur";
                             %>
                             <tr>
@@ -202,8 +218,8 @@
                                 <td style="text-align: right"><strong><%=total_pzs_sol%></strong></td>
                             </tr>
                             <%
-                                } catch (Exception e) {
-                                    out.println(e.getMessage());
+                                } catch (Exception ex) {
+                                    out.println(ex.getMessage());
                                 }
                             %>
 
@@ -211,7 +227,7 @@
                                 try {
                             %>
                             <%
-                                String qry_pzsur = "select sum(can_sol) as sol, sum(cant_sur) as sur, r.fecha_hora from receta r, detreceta dr where r.id_rec = dr.id_rec AND r.fecha_hora BETWEEN '" + fecha1 + " 00:00:01' and '" + fecha2 + " 23:59:59' group by DAY(r.fecha_hora) ;";
+                                String qry_pzsur = "select sum(can_sol) as sol, sum(cant_sur) as sur, fecha_hora from recetaConcentrado where cla_uni = '" + cla_uni + "' and fecha_hora BETWEEN '" + fecha1 + " 00:00:01' and '" + fecha2 + " 23:59:59' group by DAY(fecha_hora) ;";
                             %>
                             <tr>
                                 <%
@@ -236,8 +252,8 @@
                                 <td style="text-align: right"><strong><%=total_pzs_no_sur%></strong></td>
                             </tr>
                             <%
-                                } catch (Exception e) {
-                                    out.println(e.getMessage());
+                                } catch (Exception ex) {
+                                    out.println(ex.getMessage());
                                 }
                             %>
 
@@ -248,12 +264,12 @@
                             <tr>
                                 <%
                                     int tot_clavez_sol = 0, total_cla_sol_c = 0;
-                                    String qry_cant_pzs = "select fec_sur from detreceta where fec_sur BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' group by fec_sur";
+                                    String qry_cant_pzs = "select fec_sur from recetaConcentrado where cla_uni = '" + cla_uni + "' and fec_sur BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' group by fec_sur";
                                     ResultSet rset = con.consulta(qry_cant_pzs);
                                     while (rset.next()) {
                                         fecha = rset.getString("fec_sur");
                                         int cont = 0, cont2 = 0;
-                                        String qry_clasur = "select dp.cla_pro from receta r, detreceta dr, detalle_productos dp where r.id_rec = dr.id_rec  AND dr.det_pro = dp.det_pro and r.fecha_hora BETWEEN '" + fecha + " 00:00:01' and '" + fecha + " 23:59:59' group by DAY(r.fecha_hora), dp.cla_pro ;";
+                                        String qry_clasur = "select cla_pro from recetaConcentrado where fecha_hora BETWEEN '" + fecha + " 00:00:01' and '" + fecha + " 23:59:59' and cla_uni = '" + cla_uni + "' group by DAY(fecha_hora), cla_pro ;";
                                         ResultSet rset2 = con.consulta(qry_clasur);
                                         while (rset2.next()) {
                                             cont++;
@@ -265,7 +281,7 @@
                                 <%
                                     }
 
-                                    String qry_cant_pzsf = "select dp.cla_pro from receta r, detreceta dr, detalle_productos dp where r.id_rec = dr.id_rec and dr.det_pro = dp.det_pro and r.fecha_hora BETWEEN '" + fecha1 + " 00:00:01' and '" + fecha2 + " 23:59:59' group by dp.cla_pro ;";
+                                    String qry_cant_pzsf = "select cla_pro from recetaConcentrado where fecha_hora BETWEEN '" + fecha1 + " 00:00:01' and '" + fecha2 + " 23:59:59' and cla_uni = '" + cla_uni + "' group by cla_pro ;";
                                     rset = con.consulta(qry_cant_pzsf);
                                     while (rset.next()) {
                                         tot_clavez_sol++;
@@ -277,8 +293,8 @@
                                 <td style="text-align: right"><strong><%=total_cla_soli%></strong></td>
                             </tr>
                             <%
-                                } catch (Exception e) {
-                                    out.println(e.getMessage());
+                                } catch (Exception ex) {
+                                    out.println(ex.getMessage());
                                 }
                             %>
 
@@ -288,12 +304,12 @@
                             <tr>
                                 <%
                                     int total_cla_no_sur = 0, cont_nosur = 0, cont4 = 0;
-                                    String qry_cant_pzs1 = "select fec_sur from detreceta where fec_sur BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' group by fec_sur";
+                                    String qry_cant_pzs1 = "select fec_sur from recetaConcentrado where fec_sur BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' and cla_uni = '" + cla_uni + "' group by fec_sur";
                                     ResultSet rset = con.consulta(qry_cant_pzs1);
                                     while (rset.next()) {
                                         fecha = rset.getString("fec_sur");
                                         int cont = 0, cont2 = 0, tot = 0, cont3 = 0, cont5 = 0;
-                                        String qry_clasur = "select dp.cla_pro from receta r, detreceta dr,  detalle_productos dp where dr.status=0 and r.id_rec = dr.id_rec and dr.det_pro = dp.det_pro and r.fecha_hora BETWEEN '" + fecha + " 00:00:01' and '" + fecha + " 23:59:59' group by DAY(r.fecha_hora), dp.cla_pro ;";
+                                        String qry_clasur = "select cla_pro from recetaConcentrado where status=0 and fecha_hora BETWEEN '" + fecha + " 00:00:01' and '" + fecha + " 23:59:59' and cla_uni ='" + cla_uni + "' group by DAY(fecha_hora), cla_pro ;";
                                         ResultSet rset2 = con.consulta(qry_clasur);
                                         while (rset2.next()) {
                                             cont++;
@@ -310,7 +326,7 @@
                                         //cont_nosur++;
                                     }
                                     int tot_clavez_nsol1 = 0, total_cla_nsol_c = 0;
-                                    String qry_cant_pzsnf = "select dp.cla_pro from receta r, detreceta dr, detalle_productos dp where dr.status=0 and r.id_rec = dr.id_rec AND dr.det_pro = dp.det_pro and r.fecha_hora BETWEEN '" + fecha1 + " 00:00:01' and '" + fecha2 + " 23:59:59' group by dp.cla_pro ;";
+                                    String qry_cant_pzsnf = "select cla_pro from recetaConcentrado where status=0 and fecha_hora BETWEEN '" + fecha1 + " 00:00:01' and '" + fecha2 + " 23:59:59' and cla_uni = '" + cla_uni + "' group by cla_pro ;";
                                     rset = con.consulta(qry_cant_pzsnf);
                                     while (rset.next()) {
                                         tot_clavez_nsol1++;
@@ -321,8 +337,8 @@
                                 <td style="text-align: right"><strong><%=total_cla_nos%></strong></td>
                             </tr>
                             <%
-                                } catch (Exception e) {
-                                    out.println(e.getMessage());
+                                } catch (Exception ex) {
+                                    out.println(ex.getMessage());
                                 }
                             %>
 
@@ -333,7 +349,7 @@
                                 try {
                             %>
                             <%
-                                String qry_tot_rece = "select fec_sur from detreceta  where fec_sur BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' group by fec_sur";
+                                String qry_tot_rece = "select fec_sur from recetaConcentrado  where fec_sur BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' and cla_uni = '" + cla_uni + "' group by fec_sur";
                             %>
                             <tr>
                                 <%
@@ -342,7 +358,7 @@
                                     while (rset.next()) {
                                         fecha = rset.getString("fec_sur");
                                         int tot_folios = 0;
-                                        String qry_pzsur_col = "select r.id_rec from receta r where r.fecha_hora between '" + fecha + " 00:00:01' and '" + fecha + " 23:59:59' and r.baja = '0' group by id_rec";
+                                        String qry_pzsur_col = "select id_rec from recetaConcentrado where fecha_hora between '" + fecha + " 00:00:01' and '" + fecha + " 23:59:59' and baja = '0' and cla_uni ='" + cla_uni + "' group by id_rec";
                                         ResultSet rset2 = con.consulta(qry_pzsur_col);
                                         while (rset2.next()) {
                                             tot_folios++;
@@ -357,8 +373,8 @@
                                 <td style="text-align: right"><strong><%=tot_rec_sol%></strong></td>
                             </tr>
                             <%
-                                } catch (Exception e) {
-                                    out.println(e.getMessage());
+                                } catch (Exception ex) {
+                                    out.println(ex.getMessage());
                                 }
                             %>
 
@@ -367,7 +383,7 @@
                                 try {
                             %>
                             <%
-                                String qry_sur = "select fec_sur from detreceta  where fec_sur BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' group by fec_sur";
+                                String qry_sur = "select fec_sur from recetaConcentrado  where fec_sur BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' and cla_uni = '" + cla_uni + "' group by fec_sur";
                             %>
                             <tr>
                                 <%
@@ -377,13 +393,13 @@
                                         int r_rf = 0, r_no = 0, r_parcial = 0;
                                         fecha = rset.getString("fec_sur");
 
-                                        String qry_surno = "select r.id_rec from receta r where r.fecha_hora between '" + fecha + " 00:00:01' and '" + fecha + " 23:59:59' and r.baja = '0'  group by id_rec";
+                                        String qry_surno = "select id_rec from recetaConcentrado where fecha_hora between '" + fecha + " 00:00:01' and '" + fecha + " 23:59:59' and baja = '0' and cla_uni = '" + cla_uni + "' group by id_rec";
                                         ResultSet rset2 = con.consulta(qry_surno);
                                         while (rset2.next()) {
                                             r_rf++;
                                         }
 
-                                        qry_surno = "select r.id_rec from receta r, detreceta dr where r.id_rec = dr.id_rec and dr.status='0' and r.baja='0'  and r.fecha_hora between '" + fecha + " 00:00:01' and '" + fecha + " 23:59:59'  group by id_rec";
+                                        qry_surno = "select id_rec from recetaConcentrado where status='0' and baja='0' and cla_uni = '" + cla_uni + "' and fecha_hora between '" + fecha + " 00:00:01' and '" + fecha + " 23:59:59'  group by id_rec";
                                         rset2 = con.consulta(qry_surno);
                                         while (rset2.next()) {
                                             r_no++;
@@ -400,8 +416,8 @@
                                 <td style="text-align: right"><strong><%=(tot_rec_100)%>/<%=tot_rec_par%></strong></td>
                             </tr>
                             <%
-                                } catch (Exception e) {
-                                    out.println(e.getMessage());
+                                } catch (Exception ex) {
+                                    out.println(ex.getMessage());
                                 }
                             %>
 
@@ -411,7 +427,7 @@
                                 try {
                             %>
                             <%
-                                String qry_por = "select sum(can_sol) as sol, sum(cant_sur) as sur, r.fecha_hora from receta r, detreceta dr where r.id_rec = dr.id_rec AND r.fecha_hora BETWEEN '" + fecha1 + " 00:00:01' and '" + fecha2 + " 23:59:59' group by DAY(fecha_hora) ;";
+                                String qry_por = "select sum(can_sol) as sol, sum(cant_sur) as sur, fecha_hora from recetaConcentrado where fecha_hora BETWEEN '" + fecha1 + " 00:00:01' and '" + fecha2 + " 23:59:59' and cla_uni = '" + cla_uni + "' group by DAY(fecha_hora) ;";
                             %>
                             <tr>
                                 <%
@@ -455,8 +471,8 @@
                                 <td style="text-align: right"><strong><%=tot_porc%> %</strong></td>
                             </tr>
                             <%
-                                } catch (Exception e) {
-                                    out.println(e.getMessage());
+                                } catch (Exception ex) {
+                                    out.println(ex.getMessage());
                                 }
                             %>
 
@@ -467,7 +483,7 @@
                             <tr>
                                 <%
                                     int tot_pzs_sol = 0;
-                                    String qry_fecha1 = "select sum(cant_sur) as sur, r.fecha_hora from receta r, detreceta dr where r.id_rec = dr.id_rec  AND r.fecha_hora BETWEEN '" + fecha1 + " 00:00:01' and '" + fecha2 + " 23:59:59' group by DAY(r.fecha_hora) ;";
+                                    String qry_fecha1 = "select sum(cant_sur) as sur, fecha_hora from recetaConcentrado where fecha_hora BETWEEN '" + fecha1 + " 00:00:01' and '" + fecha2 + " 23:59:59' and cla_uni = '" + cla_uni + "' group by DAY(fecha_hora) ;";
                                     ResultSet rset = con.consulta(qry_fecha1);
                                     while (rset.next()) {
                                         cant_sol = rset.getString("sur");
@@ -488,8 +504,8 @@
                                 <td style="text-align: right"><strong><%=tot_pzs_sol%></strong></td>
                             </tr>
                             <%
-                                } catch (Exception e) {
-                                    out.println(e.getMessage());
+                                } catch (Exception ex) {
+                                    out.println(ex.getMessage());
                                 }
                             %>
 
@@ -501,7 +517,7 @@
                             <tr>
                                 <%
                                     float tot_ventas = 0;
-                                    String qry_fecha2 = "SELECT p.cos_pro, dr.cant_sur, sum(p.cos_pro * dr.cant_sur) as sum FROM detreceta dr, detalle_productos dp, productos p, receta r where dr.id_rec = r.id_rec and dr.det_pro = dp.det_pro AND dp.cla_pro = p.cla_pro and r.fecha_hora between '" + fecha1 + " 00:00:01' and '" + fecha2 + " 23:59:59' group by DAY(r.fecha_hora) asc;";
+                                    String qry_fecha2 = "SELECT cos_pro, cant_sur, sum(cos_pro * cant_sur) as sum FROM recetaConcentrado where fecha_hora between '" + fecha1 + " 00:00:01' and '" + fecha2 + " 23:59:59' and cla_uni = '" + cla_uni + "' group by DAY(fecha_hora) asc;";
                                     ResultSet rset = con.consulta(qry_fecha2);
                                     while (rset.next()) {
                                         float precio = Float.parseFloat(rset.getString("sum"));
@@ -514,8 +530,8 @@
                                 <td style="text-align: right"><strong>$ <%=formatter2.format(tot_ventas)%></strong></td>
                             </tr>
                             <%
-                                } catch (Exception e) {
-                                    out.println(e.getMessage());
+                                } catch (Exception ex) {
+                                    out.println(ex.getMessage());
                                 }
                             %>
 

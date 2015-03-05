@@ -31,7 +31,7 @@
             
             <form class="form-signin" action="Login" method="GET">
                 <div class="row">
-                    <div class="col-md-8"><h2 style="color: #000; font-style: oblique">SISTEMA DE FARMACIA</h2></div>
+                    <div class="col-md-8"><h2 style="color: #FFFFFF; font-style: oblique">SISTEMA DE FARMACIA</h2></div>
                    
                     <div class="col-md-4"></div>
                 </div>
@@ -65,7 +65,7 @@
             </form>
                     <div class="row" >
                         <div class="col-md-4"></div>
-                        <div class="col-md-4"><h4 class="left"><a href="index.jsp"><font color="#00000">Regresar a Men&uacute;</font></a></h4></div>                        
+                        <div class="col-md-4"><h4 class="left"><a href="index.jsp"><font color="#FFFFFF">Regresar a Men&uacute;</font></a></h4></div>                        
                         <div class="col-md-4"></div>
                     </div>
         </div>

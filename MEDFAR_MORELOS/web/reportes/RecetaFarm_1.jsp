@@ -30,7 +30,7 @@ Usuario = request.getParameter("usuario");
 
     Connection conn; 
     Class.forName("com.mysql.jdbc.Driver"); 
-    conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/scr_morelos","root","eve9397");
+    conn = DriverManager.getConnection("jdbc:mysql://192.168.0.180:3306/scr_morelos","root","eve9397");
     
     if(Tipo.equals("1")){
     System.out.println("Nombres:"+Usuario);

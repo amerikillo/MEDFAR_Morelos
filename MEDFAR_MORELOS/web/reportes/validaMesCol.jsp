@@ -1,8 +1,9 @@
 <%@page contentType="text/html; charset=iso-8859-1" language="java" import="java.sql.*" import="java.text.*" import="java.lang.*" import="java.util.*" import= "javax.swing.*" import="java.io.*" import="java.text.DateFormat" import="java.text.ParseException" import="java.text.SimpleDateFormat" import="java.util.Calendar" import="java.util.Date"  import="java.text.NumberFormat" import="java.util.Locale" errorPage="" %>
 <%
+    HttpSession sesion = request.getSession();
 //  Conexión a la BDD -------------------------------------------------------------
     Class.forName("org.gjt.mm.mysql.Driver");
-    Connection con = DriverManager.getConnection("jdbc:mysql://localhost/scr_morelos", "root", "eve9397");
+    Connection con = DriverManager.getConnection("jdbc:mysql://192.168.0.180/scr_morelos", "root", "eve9397");
     Statement stmt = con.createStatement();
     ResultSet rset = null;
 // fin objetos de conexión --------------------------------------------------------
@@ -18,7 +19,22 @@
         }
     } catch (Exception e) {
     }
+String id_usu = "";
+    String cla_uni = "", des_uni = "";
+    try {
+        id_usu = (String) session.getAttribute("id_usu");
+    } catch (Exception e) {
+    }
+    try {
+        rset = stmt.executeQuery("select un.des_uni, us.cla_uni from usuarios us, unidades un where us.cla_uni = un.cla_uni and id_usu = '" + id_usu + "' ");
+        while (rset.next()) {
+            cla_uni = rset.getString("cla_uni");
+            des_uni = rset.getString("des_uni");
 
+        }
+    } catch (Exception e) {
+
+    }
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -154,12 +170,22 @@
                                                                     <span class="h4 col-sm-2">Unidad: </span>
                                                                     <div class="col-sm-5">
                                                                         <select name="cla_uni" class="form-control">
-
-                                                                            <%  rset = stmt.executeQuery("select cla_uni, des_uni from unidades");
-                                                                                while (rset.next()) {
+<%
+                                                                                try {
+                                                                                    rset = stmt.executeQuery("select cla_uni, des_uni from unidades");
+                                                                                    while (rset.next()) {
                                                                             %>
-                                                                            <option value="<%=rset.getString("cla_uni")%>"><%=rset.getString("des_uni")%></option>
+                                                                            <option value="<%=rset.getString("cla_uni")%>"
+                                                                                    <%
+                                                                                        if (cla_uni.equals(rset.getString("cla_uni"))) {
+                                                                                            out.println("selected");
+                                                                                        }
+                                                                                    %>
+                                                                                    ><%=rset.getString("des_uni")%></option>
                                                                             <%
+                                                                                    }
+                                                                                } catch (Exception ex) {
+                                                                                    System.out.println(ex.getMessage());
                                                                                 }
                                                                             %>
                                                                         </select>

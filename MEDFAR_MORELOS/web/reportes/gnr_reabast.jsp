@@ -101,7 +101,7 @@
                     clave_rf = rset.getString("cla_pro");
                     descrip_rf = rset.getString("des_pro");
                     String cant_rf = "0", cant_rc = "0", cant_inv = "0";
-                    String qry_rf = "select sum(dr.can_sol) from detreceta dr, detalle_productos dp where dr.fec_sur>='" + fecha_act + "' and dp.cla_pro='" + clave_rf + "' and dr.det_pro = dp.det_pro group by dp.cla_pro";
+                    String qry_rf = "select sum(can_sol) from recetaConcentrado where fec_sur>='" + fecha_act + "' and cla_pro='" + clave_rf + "' and cla_uni = '" + request.getParameter("cla_uni") + "' group by cla_pro";
                     //out.print(qry_rf+"<br>");
                     ResultSet rset2 = con.consulta(qry_rf);
                     while (rset2.next()) {
@@ -111,8 +111,7 @@
                         }
 
                     }
-
-                    String qry_inv = "select sum(i.cant) from inventario i, detalle_productos dp where i.det_pro = dp.det_pro and dp.cla_pro='" + clave_rf + "' group by dp.cla_pro";
+                    String qry_inv = "select sum(i.cant) from inventario i, recetaConcentrado dp where i.det_pro = dp.det_pro and dp.cla_pro='" + clave_rf + "' and dp.cla_uni = '" + request.getParameter("cla_uni") + "' group by dp.cla_pro";
                     rset2 = con.consulta(qry_inv);
                     while (rset2.next()) {
                         cant_inv = rset2.getString(1);

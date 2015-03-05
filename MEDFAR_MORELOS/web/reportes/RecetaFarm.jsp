@@ -50,7 +50,7 @@
     <img src="imagen/medalfalogo2.png" width=100 heigth=100>
     <%  Connection conn;       
         Class.forName("com.mysql.jdbc.Driver");
-        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/scr_morelos", "root", "eve9397");
+        conn = DriverManager.getConnection("jdbc:mysql://192.168.0.180:3306/scr_morelos", "root", "eve9397");
         ResultSet rs;
         String Muni="";
         ConectionDB con=new ConectionDB();     
@@ -79,6 +79,7 @@
             count++;
         }
         if (Tipo.equals("1")) {
+            String re=request.getParameter("re");
             System.out.println("Nombres:" + Usuario);
             File reportfile ;
             try{
@@ -107,8 +108,10 @@
             exporter.exportReport();
             
           //  JasperPrintManager.printReport(jasperPrint, true);
-
-            out.println("<script>window.location='../farmacia/modSurteFarmacia.jsp'</script>");
+            if(re!=null)
+                out.println("<script>window.close()</script>");
+            else
+                out.println("<script>window.location='../farmacia/modSurteFarmacia.jsp'</script>");
         } else if (Tipo.equals("2")) {
             File FileCol;
             try{

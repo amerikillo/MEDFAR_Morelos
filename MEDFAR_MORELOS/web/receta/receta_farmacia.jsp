@@ -109,59 +109,8 @@
         <title>SIALSS</title>
     </head>
     <body onload="focoInicial();">
-        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="../main_menu.jsp">SIALSS</a>
-            </div>
-            <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <%
-                        try {
-                            if (((String) sesion.getAttribute("tipo")).equals("FARMACIA")) {
-                    %>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Receta Electronica <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="receta_farmacia.jsp">Captura de Receta</a></li>
-                            <li><a href="receta_manual.jsp">Receta Manual</a></li>
-                            <li><a href="reimpresion_ticket.jsp">Reimpresión Ticket</a></li>
-                            <!--li class="dividr"></li>
-                            <li><a href="#rf">Reimpresión de Comprobantes</a></li-->
-                        </ul>
-                    </li>
-                    <!--li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Agenda<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="verAgenda.jsp">Ver Agenda</a></li>
-                    <!--li class="divider"></li>
-                    <li><a href="#rf">Reimpresión de Comprobantes</a></li>
-                </ul>
-            </li-->
-                    <%
-                    } else {
-                    %>
-                    <li>
-                        <a href="#rc">Receta Colectiva</a>
-                    </li>
-                    <%
-                            }
-                        } catch (Exception e) {
-
-                        }
-                    %>
-
-                </ul>
-                <div class="navbar-form navbar-right">
-                    <a class="btn btn-default" href="../index.jsp">Salir</a>
-                </div>
-            </div><!--/.nav-collapse -->
-        </div>
+        
+        <%@include file="../jspf/mainMenu.jspf" %>
         <br/>
         <div class="container-fluid">
             <div class="container">
@@ -237,7 +186,7 @@
                                 </div>
                                 <div class="col-sm-2">
                                     <button class="btn btn-block btn-primary" name="mostrar2" id="mostrar2">Mostrar</button>
-                                    <a href="../admin/pacientes/pacientes1.jsp" class="btn btn-success" target="_blank">Ver Pacientes</a></div>
+                                    <a href="#" onclick="window.open('../admin/pacientes/pacientes1.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')" class="btn btn-success">Ver Pacientes</a></div>
                             </div>
                         </div>
                         <div class="row">
@@ -287,7 +236,7 @@
                             </div>
                         </div>
                         <div class="text-right">
-                            <a href="../farmacia/existencias1.jsp" class="btn btn-success" target="_blank">Ver inventario</a></div>
+                            <a href="#" onclick="window.open('../farmacia/existencias1.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')" class="btn btn-success">Ver inventario</a></div>
                         <br>
                         <div class="row">
                             <label for="existencias" class="col-sm-2 control-label">Existencias:</label>

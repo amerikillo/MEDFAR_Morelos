@@ -115,98 +115,7 @@
         <title>SIALSS</title>
     </head>
     <body onload="focoInicial();">
-        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="../main_menu.jsp">SIALSS</a>
-            </div>
-            <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <%
-                        try {
-                            if (((String) sesion.getAttribute("tipo")).equals("FARMACIA")) {
-                    %>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Receta Electronica <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="receta_farmacia.jsp">Captura de Receta</a></li>
-                            <!--li class="dividr"></li>
-                            <li><a href="#rf">Reimpresión de Comprobantes</a></li-->
-                        </ul>
-                    </li>
-                    <!--li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Agenda<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="verAgenda.jsp">Ver Agenda</a></li>
-                    <!--li class="divider"></li>
-                    <li><a href="#rf">Reimpresión de Comprobantes</a></li>
-                </ul>
-            </li-->
-                    <%
-                    } else {
-                    %>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Mod. Farmacias<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="../farmacia/modSurteFarmacia.jsp">Surtido Receta</a></li>
-                            <li><a href="../farmacia/modSurteFarmaciaP.jsp">Surtido Receta Pendientes</a></li>
-                            <li><a href="../farmacia/modSurteFarmaciaCol.jsp">Surtido Recetas Colectivas</a></li>
-                            <li><a href="../farmacia/modRecetasSurtidas.jsp">Consultas</a></li>
-                            <li><a href="receta_colectiva.jsp">Receta Coléctiva</a></li>
-                            <li><a href="reimpresion_ticket.jsp">Reimpresión Ticket</a></li>
-                            <li><a href="reimpresion_ticket_colec.jsp">Reimpresión Ticket Colectiva</a></li>
-                            <!--li class="divider"></li>
-                            <li><a href="#rf">Reimpresión de Comprobantes</a></li-->
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <!--li><a href="../farmacia/repDiarioFarmacia.jsp">Reporte Diario por Receta</a></li>
-                            <li><a href="../farmacia/repMensFarmacia.jsp">Reporte Mensual por Receta</a></li>
-                            <li><a href="../farmacia/repConsSemanal.jsp">Consumo Semanal</a></li-->
-                            <li><a href="../farmacia/repSolSur.jsp">Solicitado / Surtido</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Existencias<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="../farmacia/existencias.jsp">Existencias</a></li>
-                            <li><a href="../farmacia/cargaAbasto.jsp">Cargar Abasto</a></li>
-                            <li><a href="../farmacia/kardex.jsp">Kardex</a></li>
-                            <!--li class="divider"></li>
-                            <li><a href="#rf">Reimpresión de Comprobantes</a></li-->
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administración de Pacientes<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="../admin/pacientes/pacientes.jsp">Pacientes</a></li>
-                            <!--li><a href="pacientes/alta_pacientes.jsp">Alta de Pacientes</a></li>
-                            <li><a href="pacientes/editar_paciente.jsp">Edición de Pacientes</a></li>
-                            <!--li class="divider"></li>
-                            <li><a href="#rf">Reimpresión de Comprobantes</a></li-->
-                        </ul>
-                    </li>
-
-                    <%
-                            }
-                        } catch (Exception e) {
-
-                        }
-                    %>
-
-                </ul>
-                <div class="navbar-form navbar-right">
-                    <a class="btn btn-default" href="../index.jsp">Salir</a>
-                </div>
-            </div><!--/.nav-collapse -->
-        </div>
+        <%@include file="../jspf/mainMenu.jspf" %>
 
         <div class="container-fluid">
             <div class="container">
@@ -320,7 +229,7 @@
                                 </div>
                             </div>
                             <div class="text-right">
-                                <a href="../farmacia/existencias1.jsp" class="btn btn-success" target="_blank">Ver inventario</a></div>
+                                <a href="#" onclick="window.open('../farmacia/existencias1.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')" class="btn btn-success">Ver inventario</a></div>
                             <br>
                             <div class="row">
                                 <label for="existencias" class="col-sm-2 control-label">Existencias:</label>

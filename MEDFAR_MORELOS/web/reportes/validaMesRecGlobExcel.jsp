@@ -10,7 +10,7 @@
     <%
     //  Conexión a la BDD -------------------------------------------------------------
         Class.forName("org.gjt.mm.mysql.Driver");
-        Connection con = DriverManager.getConnection("jdbc:mysql://localhost/scr_morelos", "root", "eve9397");
+        Connection con = DriverManager.getConnection("jdbc:mysql://192.168.0.180/scr_morelos", "root", "eve9397");
         Statement stmt = con.createStatement();
         ResultSet rset = null;
         Statement stmt2 = con.createStatement();

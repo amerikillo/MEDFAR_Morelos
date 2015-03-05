@@ -70,7 +70,22 @@
         //response.setContentType("application/vnd.ms-excel");
         //response.setHeader("Content-Disposition", "attachment;filename=\"report.xls\"");
     }
+    String id_usu = "";
+    String cla_uni = "", des_uni = "";
+    try {
+        id_usu = (String) session.getAttribute("id_usu");
+    } catch (Exception e) {
+    }
+    try {
+        rset = con.consulta("select un.des_uni, us.cla_uni from usuarios us, unidades un where us.cla_uni = un.cla_uni and id_usu = '" + id_usu + "' ");
+        while (rset.next()) {
+            cla_uni = rset.getString("cla_uni");
+            des_uni = rset.getString("des_uni");
 
+        }
+    } catch (Exception e) {
+
+    }
 %>
 <html>
     <head>
@@ -99,7 +114,7 @@
 
         </div>
         <div>
-            
+
         </div>
 
         <div>
@@ -114,7 +129,7 @@
                         <input type="submit" class="btn btn-primary btn-block" name="submit" value="Calcular Reposicion"/>
                     </div>
                     <div class="col-sm-2">
-                        <a href="gnr_reabast.jsp?dias=<%=dias%>&submit=<%=request.getParameter("submit")%>&cla_uni=<%=request.getParameter("cla_uni")%>" class="btn btn-block btn-default" target="_blank">Descargar</a>
+                        <a href="gnr_reabast.jsp?dias=<%=dias%>&submit=<%=request.getParameter("submit")%>&cla_uni=<%=cla_uni%>" class="btn btn-block btn-default" target="_blank">Descargar</a>
                     </div>
                 </div>
             </form>
@@ -130,76 +145,76 @@
                     <td><Strong>Cant. <br/>Sugerida</Strong></td>
                 </tr>
                 <%
-                try{
-                    String clave_rf = "", descrip_rf = "";
+                    try {
+                        String clave_rf = "", descrip_rf = "";
 
-                    String qry_clave = "select cla_pro, des_pro from productos order by cla_pro+0";
-                    //out.print(qry_clave);
+                        String qry_clave = "select cla_pro, des_pro from productos order by cla_pro+0";
+                        //out.print(qry_clave);
 
-                    rset = con.consulta(qry_clave);
-                    while (rset.next()) {
-                        clave_rf = rset.getString("cla_pro");
-                        descrip_rf = rset.getString("des_pro");
-                        String cant_rf = "0", cant_rc = "0", cant_inv = "0";
-                        String qry_rf = "select sum(dr.can_sol) from detreceta dr, detalle_productos dp where dr.fec_sur>='" + fecha_act + "' and dp.cla_pro='" + clave_rf + "' and dr.det_pro = dp.det_pro group by dp.cla_pro";
-                        //out.print(qry_rf+"<br>");
-                        ResultSet rset2 = con.consulta(qry_rf);
-                        while (rset2.next()) {
-                            cant_rf = rset2.getString(1);
-                            if (cant_rf.equals("")) {
-                                cant_rf = "0";
-                            }
-
-                        }
-
-                        String qry_inv = "select sum(i.cant) from inventario i, detalle_productos dp where i.det_pro = dp.det_pro and dp.cla_pro='" + clave_rf + "' group by dp.cla_pro";
-                        rset2 = con.consulta(qry_inv);
-                        while (rset2.next()) {
-                            cant_inv = rset2.getString(1);
-                            if (cant_inv.equals("")) {
-                                cant_inv = "0";
-                            }
-                        }
-
-                        float cant_total = (Float.parseFloat(cant_rf));
-
-                        if (cant_total > -1) {
-                            float con_diario = (cant_total / 30);
-                            float cons_dia = con_diario;
-                            double dia_abasto2 = Math.ceil(cons_dia * dias);
-                            int dia_abasto = (int) (dia_abasto2);
-                            float cant_quincenal = (float) (Math.ceil(cant_total / 2));
-                            float cant_semana = (float) (Math.ceil(cant_quincenal / 2));
-                            float sobre = 0;
-                            int exist_fut = (Integer.parseInt(cant_inv)) - dia_abasto;
-
-                            float cant_re = (cant_quincenal) - ((int) (exist_fut));
-                            if (cant_re <= 0) {
-                                sobre = (cant_re) * -1;
-                                cant_re = 0;
-                            }
-                            float x = 3;
-                            float y = 30;
-                            float min_con = (x / y);
+                        rset = con.consulta(qry_clave);
+                        while (rset.next()) {
+                            clave_rf = rset.getString("cla_pro");
+                            descrip_rf = rset.getString("des_pro");
+                            String cant_rf = "0", cant_rc = "0", cant_inv = "0";
+                            String qry_rf = "select sum(can_sol) from recetaConcentrado where fec_sur>='" + fecha_act + "' and cla_pro='" + clave_rf + "' and cla_uni = '" + cla_uni + "' group by cla_pro";
                             //out.print(qry_rf+"<br>");
-                            //cant_rf=rset.getString("sum(cant_sol)");
-                            //out.print(clave_rf + " " + cant_rf+"<br>");
+                            ResultSet rset2 = con.consulta(qry_rf);
+                            while (rset2.next()) {
+                                cant_rf = rset2.getString(1);
+                                if (cant_rf.equals("")) {
+                                    cant_rf = "0";
+                                }
 
-                            int total_t = (int) (cant_re);
-
-                            if (exist_fut <= 0) {
-                                total_t = (int) cant_quincenal;
-                            }
-                            if (exist_fut > (int) (cant_quincenal)) {//Sobreabasto
-                                total_t = 0;
-                            }
-                            if (con_diario <= min_con) {
-                                total_t = 1;
                             }
 
-                            if (cant_total != 0) {
-                                String qry_inserta = "insert into reabastecimientos () values ()";
+                            String qry_inv = "select sum(i.cant) from inventario i, recetaConcentrado dp where i.det_pro = dp.det_pro and dp.cla_pro='" + clave_rf + "' and dp.cla_uni = '" + cla_uni + "' group by dp.cla_pro";
+                            rset2 = con.consulta(qry_inv);
+                            while (rset2.next()) {
+                                cant_inv = rset2.getString(1);
+                                if (cant_inv.equals("")) {
+                                    cant_inv = "0";
+                                }
                             }
+
+                            float cant_total = (Float.parseFloat(cant_rf));
+
+                            if (cant_total > -1) {
+                                float con_diario = (cant_total / 30);
+                                float cons_dia = con_diario;
+                                double dia_abasto2 = Math.ceil(cons_dia * dias);
+                                int dia_abasto = (int) (dia_abasto2);
+                                float cant_quincenal = (float) (Math.ceil(cant_total / 2));
+                                float cant_semana = (float) (Math.ceil(cant_quincenal / 2));
+                                float sobre = 0;
+                                int exist_fut = (Integer.parseInt(cant_inv)) - dia_abasto;
+
+                                float cant_re = (cant_quincenal) - ((int) (exist_fut));
+                                if (cant_re <= 0) {
+                                    sobre = (cant_re) * -1;
+                                    cant_re = 0;
+                                }
+                                float x = 3;
+                                float y = 30;
+                                float min_con = (x / y);
+                                //out.print(qry_rf+"<br>");
+                                //cant_rf=rset.getString("sum(cant_sol)");
+                                //out.print(clave_rf + " " + cant_rf+"<br>");
+
+                                int total_t = (int) (cant_re);
+
+                                if (exist_fut <= 0) {
+                                    total_t = (int) cant_quincenal;
+                                }
+                                if (exist_fut > (int) (cant_quincenal)) {//Sobreabasto
+                                    total_t = 0;
+                                }
+                                if (con_diario <= min_con) {
+                                    total_t = 1;
+                                }
+
+                                if (cant_total != 0) {
+                                    // String qry_inserta = "insert into reabastecimientos () values ()";
+                                }
 
 
                 %>
@@ -232,23 +247,23 @@
                 </tr>
                 <%
 
-                            con_diario = 0;
-                            cons_dia = 0;
-                            dia_abasto = 0;
-                            dia_abasto2 = 0;
-                            cant_quincenal = 0;
-                            cant_semana = 0;
-                            exist_fut = 0;
-                            cant_re = 0;
-                            sobre = 0;
-                            min_con = 0;
-                            total_t = 0;
+                                con_diario = 0;
+                                cons_dia = 0;
+                                dia_abasto = 0;
+                                dia_abasto2 = 0;
+                                cant_quincenal = 0;
+                                cant_semana = 0;
+                                exist_fut = 0;
+                                cant_re = 0;
+                                sobre = 0;
+                                min_con = 0;
+                                total_t = 0;
 
+                            }
                         }
+                    } catch (Exception ex) {
+                        System.out.println(ex.getMessage());
                     }
-                }catch(Exception ex){
-                    System.out.println(ex.getMessage());
-                }
                 %>
             </table>
             <p>&nbsp;</p>

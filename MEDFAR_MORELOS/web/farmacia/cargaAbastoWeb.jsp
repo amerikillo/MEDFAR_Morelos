@@ -76,58 +76,8 @@
         <title>SIALSS</title>
     </head>
     <body>
-        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="main_menu.jsp">SCR</a>
-            </div>
-            <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Mod. Farmacias<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="modSurteFarmacia.jsp">Surtido Receta</a></li>
-                            <li><a href="modSurteFarmaciaCol.jsp">Surtido Recetas Colectivas</a></li>
-                            <li><a href="modRecetasSurtidas.jsp">Consultas</a></li>
-                            <li><a href="../receta/receta_colectiva.jsp">Receta Coléctiva</a></li>
-                            <!--li class="divider"></li>
-                            <li><a href="#rf">Reimpresión de Comprobantes</a></li-->
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="repDiarioFarmacia.jsp">Reporte Diario por Receta</a></li>
-                            <li><a href="repMensFarmacia.jsp">Reporte Mensual por Receta</a></li>
-                            <li><a href="repConsSemanal.jsp">Consumo Semanal</a></li>
-                            <li><a href="repSolSur.jsp">Solicitado / Surtido</a></li>
-                            <!--li><a href="#">Pendiente por Cobrar</a></li>
-                            <li><a href="#">Reporte de Antibióticos</a></li>
-                            <li><a href="#">Reporte Diario</a></li>
-                            <!--li class="divider"></li>
-                            <li><a href="#rf">Reimpresión de Comprobantes</a></li-->
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Existencias<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="existencias.jsp">Existencias</a></li>
-                            <li><a href="cargaAbasto.jsp">Cargar Abasto</a></li>
-                            <!--li class="divider"></li>
-                            <li><a href="#rf">Reimpresión de Comprobantes</a></li-->
-                        </ul>
-                    </li>
-                </ul>
-                <div class="navbar-form navbar-right">
-                    <a class="btn btn-default" href="../index.jsp">Salir</a>
-                </div>
-            </div><!--/.nav-collapse -->
-        </div>
+        
+        <%@include file="../jspf/mainMenu.jspf" %>
 
         <div class="container-fluid">
             <div class="container">
